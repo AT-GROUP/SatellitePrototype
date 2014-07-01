@@ -1,6 +1,4 @@
-SatellitePrototype
-==================
-
 Satellite IES prototype for vcmk
+==============
 
-Код запулю когда починю линукс
+Положить BB2.xml в папку с СКОМПИЛИРОВАННЫМ проектом
