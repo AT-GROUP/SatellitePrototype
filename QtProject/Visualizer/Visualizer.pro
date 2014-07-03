@@ -24,3 +24,10 @@ QMAKE_CXXFLAGS += -std=c++11
 
 RESOURCES += \
     ../../src/Visualizer/Resources.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Model/release/ -lModel
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Model/debug/ -lModel
+else:unix: LIBS += -L$$OUT_PWD/../Model/ -lModel
+
+INCLUDEPATH += $$PWD/../Model
+DEPENDPATH += $$PWD/../Model

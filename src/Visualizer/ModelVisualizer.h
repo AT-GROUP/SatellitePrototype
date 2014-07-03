@@ -14,12 +14,12 @@ class ModelVisualizer : public QWidget
 {
     Q_OBJECT
 	private:
-        QGraphicsScene* pScene;
-        QGraphicsView* pView;
-        QGraphicsPixmapItem* pBackGroundPic;
-        QGridLayout* pGridLayout;
-        QListWidget* pEventList;
-        QMenuBar* pMainMenu;
+        QGraphicsScene *pScene;
+        QGraphicsView *pView;
+        QGraphicsPixmapItem *pBackGroundPic;
+        QGridLayout *pGridLayout;
+        QListWidget *pEventList;
+        QMenuBar *pMainMenu;
 
 	public:
 		explicit ModelVisualizer(QWidget *parent = 0);

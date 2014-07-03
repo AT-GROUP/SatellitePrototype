@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QTableWidget>
+#include "../../src/Model/station.h"
 
 class QStationItem: public QObject, public QGraphicsItemGroup
 {
@@ -12,14 +13,7 @@ class QStationItem: public QObject, public QGraphicsItemGroup
         QGraphicsEllipseItem *p_Ellipse;
 		QGraphicsProxyWidget *proxy;
 		QTableView *p_InfoList;
-		
-		QString name;
-		QString status;
-		QString bwNeeded;
-		QString bwInUse;
-		QString ipAddress;
-		QString satellite;
-
+        Station *pStation;
 		void updateColor();
 		void setColor(QColor qColor);
     public:

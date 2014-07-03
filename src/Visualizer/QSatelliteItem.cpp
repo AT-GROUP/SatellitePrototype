@@ -6,7 +6,7 @@
 #include <QHeaderView>
 #include <tuple>
 
-QSatelliteItem::QSatelliteItem(qreal x, qreal y, QString n, QObject* parent)
+QSatelliteItem::QSatelliteItem(qreal x, qreal y, QString n, QObject *parent)
     :QObject(parent),QGraphicsItemGroup()
 {
     icon = new QGraphicsPixmapItem(QPixmap(":satellite"));
@@ -15,33 +15,26 @@ QSatelliteItem::QSatelliteItem(qreal x, qreal y, QString n, QObject* parent)
     setAcceptHoverEvents(true);
     icon->setVisible (true);
 
-	p_InfoList = new QTableView();
-    p_InfoList->setModel(new InfoTableModel(n));
-    p_InfoList->setAutoScroll (false);
-    p_InfoList->horizontalHeader()->hide();
-    p_InfoList->verticalHeader()->hide();
+    pInfoList = new QTableView();
+    pInfoList->setModel(new InfoTableModel(n));
+    pInfoList->setAutoScroll (false);
+    pInfoList->horizontalHeader()->hide();
+    pInfoList->verticalHeader()->hide();
 
-    name = n;
-    // Default values
-	ipAddress = "10.50.0.1";
-	maxBw = "1024";
-	curBw = "0";
-	avalBw = "0";
-	stationCount = "0";
-	status = "offline";
+    pSatellite = new Satellite(n);
 
-	updateFact(std::make_tuple(n, "name", n));
-	updateFact(std::make_tuple(n, "maxBw", maxBw));
-	updateFact(std::make_tuple(n, "avalBw", avalBw));
-    updateFact(std::make_tuple(n, "curBw", curBw));
-	updateFact(std::make_tuple(n, "stationCount", stationCount));
-	updateFact(std::make_tuple(n, "status", status));
+    updateFact(std::make_tuple(n, "name", pSatellite->name()));
+    updateFact(std::make_tuple(n, "ipAddress", pSatellite->ipAddress()));
+    updateFact(std::make_tuple(n, "maxBw",  QString::number(pSatellite->maxBw())));
+    updateFact(std::make_tuple(n, "curBw", QString::number(pSatellite->curBw())));
+    updateFact(std::make_tuple(n, "stationCount", QString::number(pSatellite->stationCount())));
+    updateFact(std::make_tuple(n, "status", pSatellite->status()));
 }
 
 QSatelliteItem::~QSatelliteItem()
 {
 	delete icon;
-	delete p_InfoList;
+    delete pInfoList;
 }
 
 void QSatelliteItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -59,20 +52,20 @@ void QSatelliteItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void QSatelliteItem::hoverEnterEvent (QGraphicsSceneHoverEvent *event)
 {
    // ToDo: Fix warning "QGraphicsProxyWidget::setWidget: cannot embed widget *XXXXX; already embedded"
-   proxy = icon->scene()->addWidget(p_InfoList);
+   proxy = icon->scene()->addWidget(pInfoList);
    proxy->setPos(event->scenePos());
    proxy->resize (190,190);
 
-   p_InfoList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-   p_InfoList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-   p_InfoList->show();
+   pInfoList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   pInfoList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   pInfoList->show();
 
    event->accept();
 }
 
 void QSatelliteItem::hoverLeaveEvent (QGraphicsSceneHoverEvent *event)
 {    
-    p_InfoList->hide();
+    pInfoList->hide();
     event->accept();
 }
 
@@ -80,41 +73,47 @@ void QSatelliteItem::updateFact(std::tuple<QString, QString, QString> info)
 {
 	QString satelliteName, attrName, attrValue;
 	std::tie(satelliteName, attrName, attrValue) = info;
-	if (satelliteName == name)
+    if (satelliteName == pSatellite->name())
 	{
-        InfoTableModel* tempModel = (InfoTableModel*) p_InfoList->model();
+        InfoTableModel* tempModel = (InfoTableModel*) pInfoList->model();
         if (attrName == "name")
         {
-            name = attrValue;
+            pSatellite->setName(attrValue);
             tempModel->updateData(std::make_tuple(0,attrName,attrValue));
         }
 		if (attrName == "ipAddress")
         {
-			ipAddress = attrValue;
+            pSatellite->setIpAddress(attrValue);
             tempModel->updateData(std::make_tuple(1,attrName,attrValue));
         }
         if (attrName == "stationCount")
         {
-            if (stationCount != attrValue) emit valueChanged(name + " " + attrName + " changed to " + attrValue);
-            stationCount = attrValue;
+            if (QString::number(pSatellite->stationCount()) != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+            pSatellite->setStationCount(attrValue.toInt());
             tempModel->updateData(std::make_tuple(2,attrName,attrValue));
         }
 		if (attrName == "maxBw")
 		{
-			if (maxBw != attrValue) emit valueChanged(name + " " + attrName + " changed to " + attrValue);
-			maxBw = attrValue;
+            if (QString::number(pSatellite->maxBw()) != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+            pSatellite->setMaxBw(attrValue.toInt());
             tempModel->updateData(std::make_tuple(3,attrName,attrValue));
 		}
-		if (attrName == "avalBw")
+        if (attrName == "curBw")
         {
-			avalBw = attrValue;
+            if (QString::number(pSatellite->curBw()) != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+            pSatellite->setCurBw(attrValue.toInt());
             tempModel->updateData(std::make_tuple(4,attrName,attrValue));
         }
 		if (attrName == "status")
 		{
-			if (status != attrValue) emit valueChanged(name + " " + attrName + " changed to " + attrValue);
-			status = attrValue;
+            if (pSatellite->status() != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+            pSatellite->setStatus(attrValue);
             tempModel->updateData(std::make_tuple(5,attrName,attrValue));
 		}
 	}
+}
+
+Satellite * QSatelliteItem::satellite() const
+{
+    return pSatellite;
 }

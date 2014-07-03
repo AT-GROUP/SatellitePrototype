@@ -4,6 +4,7 @@
 #include <QGraphicsPixmapItem>
 #include <QPainter>
 #include <QTableView>
+#include "../../src/Model/satellite.h"
 
 class QSatelliteItem: public QObject, public QGraphicsItemGroup
 {
@@ -11,19 +12,13 @@ class QSatelliteItem: public QObject, public QGraphicsItemGroup
     private:
         QGraphicsPixmapItem *icon;
 		QGraphicsProxyWidget *proxy;
-		QTableView *p_InfoList;
-
-		QString name;
-		QString ipAddress;
-		QString maxBw;
-		QString curBw;
-		QString avalBw;
-		QString stationCount;
-		QString status;
+        QTableView *pInfoList;
+        Satellite *pSatellite;
     public:
         QSatelliteItem(qreal x, qreal y, QString n, QObject* parent = 0);
         ~QSatelliteItem();
 		void updateFact(std::tuple<QString, QString, QString> info);
+        Satellite * satellite() const;
 	protected:
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);

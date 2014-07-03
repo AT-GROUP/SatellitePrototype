@@ -23,8 +23,8 @@ class ConfigDialog : public QDialog
     private:
         void createIcons();
 
-        QListWidget *contentsWidget;
-        QStackedWidget *pagesWidget;
+        QListWidget *pContentsWidget;
+        QStackedWidget *pPagesWidget;
 };
 
 #endif

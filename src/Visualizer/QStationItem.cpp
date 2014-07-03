@@ -21,20 +21,14 @@ QStationItem::QStationItem(qreal x, qreal y, QString n, QObject* parent)
     p_InfoList->horizontalHeader()->hide();
     p_InfoList->verticalHeader()->hide();
 
-	name = n;
-    // Default values
-	ipAddress = "192.168.1.1";
-    bwInUse = "0";
-    bwNeeded = "0";
-    satellite = "N/A";
-	status = "Offline";
+    pStation = new Station(n);
 
-	updateFact(std::make_tuple(n, "name", n));
-	updateFact(std::make_tuple(n, "ipAddress", ipAddress));
-	updateFact(std::make_tuple(n, "bwInUse", bwInUse));
-	updateFact(std::make_tuple(n, "bwNeeded", bwNeeded));
-	updateFact(std::make_tuple(n, "satellite", satellite));
-    updateFact(std::make_tuple(n, "status", status));
+    updateFact(std::make_tuple(n, "name", pStation->name()));
+    updateFact(std::make_tuple(n, "ipAddress", pStation->ipAddress()));
+    updateFact(std::make_tuple(n, "bwInUse", QString::number(pStation->bwInUse())));
+    updateFact(std::make_tuple(n, "bwNeeded", QString::number(pStation->bwNeeded())));
+    updateFact(std::make_tuple(n, "satellite", pStation->satellite()));
+    updateFact(std::make_tuple(n, "status", pStation->status()));
 }
 
 QStationItem::~QStationItem()
@@ -45,6 +39,7 @@ QStationItem::~QStationItem()
 
 void QStationItem::updateColor()
 {
+    QString status = pStation->status();
     if (status == "Calling")
     {
         setColor(Qt::red);
@@ -114,40 +109,40 @@ void QStationItem::updateFact(std::tuple<QString, QString, QString> info)
 {
 	QString stationName, attrName, attrValue;
 	std::tie(stationName, attrName, attrValue) = info;
-	if (stationName == name)
+    if (stationName == pStation->name())
 	{
         InfoTableModel* tempModel = (InfoTableModel*) p_InfoList->model();
         if (attrName == "name")
         {
-            name = attrValue;
+            pStation->setName(attrValue);
             tempModel->updateData(std::make_tuple(0,attrName,attrValue));
         }
         if (attrName == "ipAddress")
         {
-            ipAddress = attrValue;
+            pStation->setIpAddress(attrValue);
             tempModel->updateData(std::make_tuple(1,attrName,attrValue));
         }
 		if (attrName == "bwInUse")
 		{
-			if (bwInUse != attrValue) emit valueChanged(name + " " + attrName + " changed to " + attrValue);
-			bwInUse = attrValue;
+            if (QString::number(pStation->bwInUse()) != attrValue) emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
+            pStation->setBwInUse(attrValue.toInt());
             tempModel->updateData(std::make_tuple(2,attrName,attrValue));
 		}
 		if (attrName == "bwNeeded")
 		{
-			if (bwNeeded != attrValue) emit valueChanged(name + " " + attrName + " changed to " + attrValue);
-			bwNeeded = attrValue;
+            if (QString::number(pStation->bwNeeded()) != attrValue) emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
+            pStation->setBwNeeded(attrValue.toInt());
             tempModel->updateData(std::make_tuple(3,attrName,attrValue));
 		}
 		if (attrName == "satellite")
         {
-            satellite = attrValue;
+            pStation->setSatellite(attrValue);
             tempModel->updateData(std::make_tuple(4,attrName,attrValue));
         }
 		if (attrName == "status")
 		{
-			if (status != attrValue) emit valueChanged(name + " " + attrName + " changed to " + attrValue);
-			status = attrValue;
+            if (pStation->status() != attrValue) emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
+            pStation->setStatus(attrValue);
 			updateColor();
             tempModel->updateData(std::make_tuple(5,attrName,attrValue));
 		}

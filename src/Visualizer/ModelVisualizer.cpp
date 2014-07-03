@@ -7,6 +7,7 @@
 #include <qdebug.h>
 #include <qsignalmapper.h>
 #include "ConfigDialog.h"
+#include "../../src/Model/satellite.h"
 
 ModelVisualizer::ModelVisualizer(QWidget *parent):
     QWidget(parent)
