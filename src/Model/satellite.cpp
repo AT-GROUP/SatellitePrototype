@@ -1,13 +1,13 @@
 #include "satellite.h"
 
 Satellite::Satellite(QObject* parent)
+    :QObject(parent)
 {
-    Q_UNUSED(parent);
 }
 
 Satellite::Satellite(QString name, QString ipAddress, int maxBw, int curBw, int stationCount, QString status, QObject* parent)
+    :QObject(parent)
 {
-    Q_UNUSED(parent);
     setName(name);
     setStatus(status);
     setMaxBw(maxBw);

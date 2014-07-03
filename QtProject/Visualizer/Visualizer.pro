@@ -20,8 +20,6 @@ HEADERS  += \
     ../../src/Visualizer/QSatelliteItem.h \
     ../../src/Visualizer/QStationItem.h
 
-QMAKE_CXXFLAGS += -std=c++11
-
 RESOURCES += \
     ../../src/Visualizer/Resources.qrc
 
@@ -31,3 +29,5 @@ else:unix: LIBS += -L$$OUT_PWD/../Model/ -lModel
 
 INCLUDEPATH += $$PWD/../Model
 DEPENDPATH += $$PWD/../Model
+
+QMAKE_CXXFLAGS += -std=c++11

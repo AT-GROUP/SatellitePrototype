@@ -1,13 +1,13 @@
 #include "station.h"
 
 Station::Station(QObject* parent)
+    :QObject(parent)
 {
-    Q_UNUSED(parent);
 }
 
 Station::Station(QString name, QString status, int bwNeeded, int bwInUse, QString ipAddress, QString satellite, QObject* parent)
+    :QObject(parent)
 {
-    Q_UNUSED(parent);
     setName(name);
     setStatus(status);
     setBwInUse(bwInUse);

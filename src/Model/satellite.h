@@ -5,6 +5,7 @@
 
 class Satellite : public QObject
 {
+    Q_OBJECT
     public:
         Satellite(QObject* parent = 0);
         Satellite(QString name, QString ipAddress = "192.168.1.1",

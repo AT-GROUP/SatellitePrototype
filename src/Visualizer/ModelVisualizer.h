@@ -9,6 +9,7 @@
 #include <QListWidget>
 #include <QXmlStreamReader>
 #include <qmenubar.h>
+#include "../../src/Model/model.h"
 
 class ModelVisualizer : public QWidget
 {
@@ -20,6 +21,7 @@ class ModelVisualizer : public QWidget
         QGridLayout *pGridLayout;
         QListWidget *pEventList;
         QMenuBar *pMainMenu;
+        Model *pModel;
 
 	public:
 		explicit ModelVisualizer(QWidget *parent = 0);
