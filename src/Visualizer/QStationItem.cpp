@@ -6,28 +6,28 @@
 #include <QHeaderView>
 #include <tuple>
 
-QStationItem::QStationItem(qreal x, qreal y, QString n, QObject* parent)
+QStationItem::QStationItem(Station *station, QObject* parent)
     :QObject(parent),QGraphicsItemGroup()
 {
+    pStation = station;
     p_Ellipse = new QGraphicsEllipseItem(QRectF(-5,-5,5,5));
     p_Ellipse->setPen(QColor(Qt::red));
     addToGroup(p_Ellipse);
-    setPos(x,y);
+    setPos(*pStation->pos());
     setAcceptHoverEvents(true);
 
+    QString n = pStation->name();
     p_InfoList = new QTableView();
     p_InfoList->setModel(new InfoTableModel(n));
     p_InfoList->setAutoScroll (false);
     p_InfoList->horizontalHeader()->hide();
-    p_InfoList->verticalHeader()->hide();
-
-    pStation = new Station(n);
+    p_InfoList->verticalHeader()->hide();    
 
     updateFact(std::make_tuple(n, "name", pStation->name()));
     updateFact(std::make_tuple(n, "ipAddress", pStation->ipAddress()));
     updateFact(std::make_tuple(n, "bwInUse", QString::number(pStation->bwInUse())));
     updateFact(std::make_tuple(n, "bwNeeded", QString::number(pStation->bwNeeded())));
-    updateFact(std::make_tuple(n, "satellite", pStation->satellite()));
+    //updateFact(std::make_tuple(n, "satellite", pStation->satellite()));
     updateFact(std::make_tuple(n, "status", pStation->status()));
 }
 
@@ -136,7 +136,7 @@ void QStationItem::updateFact(std::tuple<QString, QString, QString> info)
 		}
 		if (attrName == "satellite")
         {
-            pStation->setSatellite(attrValue);
+            //pStation->setSatellite(attrValue);
             tempModel->updateData(std::make_tuple(4,attrName,attrValue));
         }
 		if (attrName == "status")
@@ -147,4 +147,9 @@ void QStationItem::updateFact(std::tuple<QString, QString, QString> info)
             tempModel->updateData(std::make_tuple(5,attrName,attrValue));
 		}
 	}
+}
+
+Station * QStationItem::station() const
+{
+    return pStation;
 }

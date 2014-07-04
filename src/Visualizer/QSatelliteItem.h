@@ -15,7 +15,7 @@ class QSatelliteItem: public QObject, public QGraphicsItemGroup
         QTableView *pInfoList;
         Satellite *pSatellite;
     public:
-        QSatelliteItem(qreal x, qreal y, QString n, QObject* parent = 0);
+        QSatelliteItem(Satellite *satellite, QObject* parent = 0);
         ~QSatelliteItem();
 		void updateFact(std::tuple<QString, QString, QString> info);
         Satellite * satellite() const;

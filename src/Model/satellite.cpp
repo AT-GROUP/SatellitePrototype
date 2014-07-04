@@ -1,11 +1,6 @@
 #include "satellite.h"
 
-Satellite::Satellite(QObject* parent)
-    :QObject(parent)
-{
-}
-
-Satellite::Satellite(QString name, QString ipAddress, int maxBw, int curBw, int stationCount, QString status, QObject* parent)
+Satellite::Satellite(QString name, int maxBw, QPair<int,int> pos, QString ipAddress, int curBw, int stationCount, QString status, QObject* parent)
     :QObject(parent)
 {
     setName(name);
@@ -14,6 +9,7 @@ Satellite::Satellite(QString name, QString ipAddress, int maxBw, int curBw, int 
     setCurBw(curBw);
     setIpAddress(ipAddress);
     setStationCount(stationCount);
+    pos_ = new QPointF(pos.first, pos.second);
 }
 
 QString Satellite::name() const
@@ -79,4 +75,9 @@ void Satellite::setStationCount(int newStationCount)
 void Satellite::setStatus(QString newStatus)
 {
     status_ = newStatus;
+}
+
+QPointF * Satellite::pos() const
+{
+    return pos_;
 }

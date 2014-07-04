@@ -32,12 +32,8 @@ class ModelVisualizer : public QWidget
         QAction *showInfo;
         QAction *action5;
         QAction *action6;
-
-        QMap<QString, QStationItem*> *pStationList;
-        QMap<QString, QSatelliteItem*> *pSatelliteList;
 	public slots:
 		void addMessageToEventsList(const QString& message);
-		void updateFromModelFile();
 		void showGraphsWindow();
         void showConfigWindow();
 	protected:
@@ -48,8 +44,7 @@ class ModelVisualizer : public QWidget
 		void createView();
 		void createWidgets();
 		void createLayout();
-		void addStations();
-		std::tuple<QString, QString, QString> parseFacts(QXmlStreamReader& xml);
+        void addStations();
 	signals:
 		void pause();
 };

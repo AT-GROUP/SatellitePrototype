@@ -6,22 +6,24 @@
 #include <QHeaderView>
 #include <tuple>
 
-QSatelliteItem::QSatelliteItem(qreal x, qreal y, QString n, QObject *parent)
+QSatelliteItem::QSatelliteItem(Satellite *satellite, QObject *parent)
     :QObject(parent),QGraphicsItemGroup()
 {
     icon = new QGraphicsPixmapItem(QPixmap(":satellite"));
 	addToGroup(icon);
-    setPos(x,y);
+    pSatellite = satellite;
+
+    setPos(*pSatellite->pos());
     setAcceptHoverEvents(true);
     icon->setVisible (true);
+
+    QString n = pSatellite->name();
 
     pInfoList = new QTableView();
     pInfoList->setModel(new InfoTableModel(n));
     pInfoList->setAutoScroll (false);
     pInfoList->horizontalHeader()->hide();
     pInfoList->verticalHeader()->hide();
-
-    pSatellite = new Satellite(n);
 
     updateFact(std::make_tuple(n, "name", pSatellite->name()));
     updateFact(std::make_tuple(n, "ipAddress", pSatellite->ipAddress()));

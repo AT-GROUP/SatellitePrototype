@@ -1,19 +1,16 @@
 #include "station.h"
 
-Station::Station(QObject* parent)
-    :QObject(parent)
-{
-}
 
-Station::Station(QString name, QString status, int bwNeeded, int bwInUse, QString ipAddress, QString satellite, QObject* parent)
+Station::Station(QString name, Satellite* satellite, QPair<int,int> pos, QString ipAddress, int bwNeeded, int bwInUse, QString status, QObject* parent)
     :QObject(parent)
 {
     setName(name);
+    setSatellite(satellite);
     setStatus(status);
     setBwInUse(bwInUse);
     setBwNeeded(bwNeeded);
     setIpAddress(ipAddress);
-    setSatellite(satellite);
+    pos_ = new QPointF(pos.first, pos.second);
 }
 
 QString Station::name() const
@@ -40,7 +37,7 @@ QString Station::ipAddress() const
 {
     return ipAddress_;
 }
-QString Station::satellite() const
+Satellite * Station::satellite() const
 {
     return satellite_;
 }
@@ -65,7 +62,7 @@ void Station::setIpAddress(QString newIpAddress)
     ipAddress_ = newIpAddress;
 }
 
-void Station::setSatellite(QString newSatellite)
+void Station::setSatellite(Satellite *newSatellite)
 {
     satellite_ = newSatellite;
 }
@@ -73,4 +70,9 @@ void Station::setSatellite(QString newSatellite)
 void Station::setStatus(QString newStatus)
 {
     status_ = newStatus;
+}
+
+QPointF * Station::pos() const
+{
+    return pos_;
 }

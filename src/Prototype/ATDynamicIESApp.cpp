@@ -43,7 +43,7 @@ void ATDynamicIESApp::reachNextState()
 			++state;
 			break;
 		case 2:
-            pVisualizer->updateFromModelFile();
+            //pVisualizer->updateFromModelFile();
 			state = 0;
 			break;
 	}

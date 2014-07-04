@@ -13,3 +13,6 @@ SOURCES += \
     ../../src/Model/station.cpp
 
 QMAKE_CXXFLAGS += -std=c++11
+
+OTHER_FILES += \
+    ../../Build/QtCreator/Prototype/init.xml

@@ -2,14 +2,15 @@
 #define SATELLITE_H
 
 #include <QObject>
+#include <QPointF>
+#include <QPair>
 
 class Satellite : public QObject
 {
     Q_OBJECT
     public:
-        Satellite(QObject* parent = 0);
-        Satellite(QString name, QString ipAddress = "192.168.1.1",
-                  int maxBw = 0, int curBw = 0, int stationCount = 0,
+        Satellite(QString name, int maxBw, QPair<int,int> pos,
+                  QString ipAddress = "192.168.1.1", int curBw = 0, int stationCount = 0,
                   QString status = "Offline", QObject* parent = 0);
 
         QString name() const;
@@ -19,6 +20,7 @@ class Satellite : public QObject
         int avalBw() const;
         int stationCount() const;
         QString status() const;
+        QPointF* pos() const;
 
         void setName(QString newName);
         void setIpAddress(QString newIpAddress);
@@ -33,6 +35,7 @@ class Satellite : public QObject
         int curBw_;
         int stationCount_;
         QString status_;
+        QPointF *pos_;
 };
 
 #endif // SATELLITE_H
