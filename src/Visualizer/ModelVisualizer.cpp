@@ -18,6 +18,7 @@ ModelVisualizer::ModelVisualizer(QWidget *parent):
     createMenu();
     createLayout();
     addStations();
+    initStatistics();
 }
 
 ModelVisualizer::~ModelVisualizer()
@@ -96,6 +97,12 @@ void ModelVisualizer::addStations()
         pScene->addItem(adding);
         connect(adding, SIGNAL(valueChanged(const QString&)), this, SLOT(addMessageToEventsList(const QString&)));
     }
+}
+
+void ModelVisualizer::initStatistics()
+{
+    QVector<Satellite*>* sats = pModel->satelliteList();
+    statistics = new StatisticCollector(sats, 0);
 }
 
 void ModelVisualizer::addMessageToEventsList(const QString& message)

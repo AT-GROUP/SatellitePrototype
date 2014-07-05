@@ -12,13 +12,15 @@ typedef QVector<Time> Times; //using QVector<double> because of QCustomPlot
 typedef QVector<Value> Values;
 typedef std::pair<Times, Values> Data;
 
+#define EPSILON 1e-10
+
 class StatisticCollector
 {
 private:
     std::unordered_map<Satellite*, Data> statistics;
 public:
-    StatisticCollector();
-    void addData(Satellite* sat, Time t, Value v);
+    StatisticCollector(QVector<Satellite*>* satellites, Time t);
+    void addData(Satellite* sat, Time t);
     Data* getData(Satellite* sat);
 };
 
