@@ -11,14 +11,16 @@ SOURCES += \
     ../../src/Visualizer/InfoTableModel.cpp \
     ../../src/Visualizer/ModelVisualizer.cpp \
     ../../src/Visualizer/QSatelliteItem.cpp \
-    ../../src/Visualizer/QStationItem.cpp
+    ../../src/Visualizer/QStationItem.cpp \
+    ../../src/Visualizer/StatisticCollector.cpp
 HEADERS  += \
     ../../src/Visualizer/ConfigDialog.h \
     ../../src/Visualizer/ConfigPages.h \
     ../../src/Visualizer/InfoTableModel.h \
     ../../src/Visualizer/ModelVisualizer.h \
     ../../src/Visualizer/QSatelliteItem.h \
-    ../../src/Visualizer/QStationItem.h
+    ../../src/Visualizer/QStationItem.h \
+    ../../src/Visualizer/StatisticCollector.h
 
 RESOURCES += \
     ../../src/Visualizer/Resources.qrc

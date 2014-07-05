@@ -3,6 +3,7 @@
 
 #include "QSatelliteItem.h"
 #include "QStationItem.h"
+#include "StatisticCollector.h"
 #include <QWidget>
 #include <QGraphicsView>
 #include <QGridLayout>
