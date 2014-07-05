@@ -13,7 +13,8 @@ SOURCES += \
     ../../src/Visualizer/QSatelliteItem.cpp \
     ../../src/Visualizer/QStationItem.cpp \
     ../../src/Visualizer/StatisticCollector.cpp \
-    ../../src/Visualizer/qcustomplot.cpp
+    ../../src/Visualizer/qcustomplot.cpp \
+    ../../src/Visualizer/GraphicsWidget.cpp
 HEADERS  += \
     ../../src/Visualizer/ConfigDialog.h \
     ../../src/Visualizer/ConfigPages.h \
@@ -22,7 +23,8 @@ HEADERS  += \
     ../../src/Visualizer/QSatelliteItem.h \
     ../../src/Visualizer/QStationItem.h \
     ../../src/Visualizer/StatisticCollector.h \
-    ../../src/Visualizer/qcustomplot.h
+    ../../src/Visualizer/qcustomplot.h \
+    ../../src/Visualizer/GraphicsWidget.h
 
 RESOURCES += \
     ../../src/Visualizer/Resources.qrc

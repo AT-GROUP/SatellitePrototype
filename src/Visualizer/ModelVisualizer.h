@@ -4,6 +4,7 @@
 #include "QSatelliteItem.h"
 #include "QStationItem.h"
 #include "StatisticCollector.h"
+#include "GraphicsWidget.h"
 #include <QWidget>
 #include <QGraphicsView>
 #include <QGridLayout>

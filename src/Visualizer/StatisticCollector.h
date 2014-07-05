@@ -6,19 +6,20 @@
 #include "../../src/Model/model.h"
 #include <QVector>
 
-typedef int Time;
-typedef int Value;
-typedef QVector<Time> Times; //using QVector because of QCustomPlot
+typedef double Time;
+typedef double Value;
+typedef QVector<Time> Times; //using QVector<double> because of QCustomPlot
 typedef QVector<Value> Values;
+typedef std::pair<Times, Values> Data;
 
 class StatisticCollector
 {
 private:
-    std::unordered_map<Satellite*, std::pair<Times, Values> > statistics;
+    std::unordered_map<Satellite*, Data> statistics;
 public:
     StatisticCollector();
     void addData(Satellite* sat, Time t, Value v);
-    std::pair<Times, Values>* getData(Satellite* sat);
+    Data* getData(Satellite* sat);
 };
 
 #endif // STATISTICCOLLECTOR_H
