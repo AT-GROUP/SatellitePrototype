@@ -8,7 +8,8 @@ class InfoTableModel : public QAbstractTableModel
 {
     Q_OBJECT
     public:
-        explicit InfoTableModel(QString n, QObject *parent = 0);
+        explicit InfoTableModel(QObject *parent = 0);
+        ~InfoTableModel();
         void updateData(std::tuple<int, QString, QString> incomingData);
         QMap<int, QPair<QString, QString>> *pDataStorage;
     private:

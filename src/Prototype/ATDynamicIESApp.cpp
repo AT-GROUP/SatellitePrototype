@@ -11,7 +11,7 @@ ATDynamicIESApp::ATDynamicIESApp(int & argc ,char** argv)
 	pTickTimer = new QTimer(this);
 	connect(pTickTimer, SIGNAL(timeout()), this, SLOT(reachNextState()));
     pWrapper->configurate();
-	pTickTimer->start(500);
+    pTickTimer->start(500);
 	state = 0;
     connect(pVisualizer->startSim, SIGNAL(triggered()), pTickTimer, SLOT(start()));
     connect(pVisualizer->pauseSim, SIGNAL(triggered()), pTickTimer, SLOT(stop()));
@@ -43,7 +43,7 @@ void ATDynamicIESApp::reachNextState()
 			++state;
 			break;
 		case 2:
-            //pVisualizer->updateFromModelFile();
+            pVisualizer->processModelTact();
 			state = 0;
 			break;
 	}

@@ -32,6 +32,7 @@ class ModelVisualizer : public QWidget
         QAction *showInfo;
         QAction *action5;
         QAction *action6;
+        void processModelTact();
 	public slots:
 		void addMessageToEventsList(const QString& message);
 		void showGraphsWindow();

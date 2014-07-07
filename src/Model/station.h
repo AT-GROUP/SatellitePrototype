@@ -11,7 +11,7 @@ class Station : public QObject
     public:
         Station(QString name, Satellite *satellite, QPair<int,int> pos,
                 QString ipAddress = "192.168.1.1", int bwNeeded = 0, int bwInUse = 0,
-                QString status = "Offline", QObject* parent = 0);
+                QString status = "Online", QObject* parent = 0);
 
         QString name() const;
         QString ipAddress() const;
@@ -27,6 +27,10 @@ class Station : public QObject
         void setIpAddress(QString newIpAddress);
         void setSatellite(Satellite *newSatellite);
         void setStatus(QString newStatus);
+        void refreshData();
+        int callChance;
+        int failureChance;
+
     private:
         QString name_;
         QString status_;
@@ -35,6 +39,8 @@ class Station : public QObject
         QString ipAddress_;
         Satellite *satellite_;
         QPointF *pos_;
+    signals:
+        void attrChanged(const QPair<QString,QString>& info);
 };
 
 #endif // STATION_H

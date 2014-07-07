@@ -1,10 +1,14 @@
 #include "InfoTableModel.h"
 
-InfoTableModel::InfoTableModel(QString n, QObject *parent):
+InfoTableModel::InfoTableModel(QObject *parent):
     QAbstractTableModel(parent)
 {
-    Q_UNUSED(n);
     pDataStorage = new QMap<int, QPair<QString, QString>>();
+}
+
+InfoTableModel::~InfoTableModel()
+{
+    delete pDataStorage;
 }
 
 int InfoTableModel::rowCount(const QModelIndex &parent) const

@@ -26,6 +26,7 @@ ModelVisualizer::~ModelVisualizer()
     delete pView;
     delete pGridLayout;
     delete pEventList;
+    delete pModel;
     delete pMainMenu;
 }
 
@@ -136,4 +137,9 @@ void ModelVisualizer::showConfigWindow()
 {
     ConfigDialog* g1 = new ConfigDialog(this);
     g1->show();
+}
+
+void ModelVisualizer::processModelTact()
+{
+    pModel->processModelTact();
 }

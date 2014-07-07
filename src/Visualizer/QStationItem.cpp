@@ -10,31 +10,26 @@ QStationItem::QStationItem(Station *station, QObject* parent)
     :QObject(parent),QGraphicsItemGroup()
 {
     pStation = station;
-    p_Ellipse = new QGraphicsEllipseItem(QRectF(-5,-5,5,5));
-    p_Ellipse->setPen(QColor(Qt::red));
-    addToGroup(p_Ellipse);
+    pEllipse = new QGraphicsEllipseItem(QRectF(-5,-5,5,5));
+    pEllipse->setPen(QColor(Qt::red));
+    addToGroup(pEllipse);
     setPos(*pStation->pos());
     setAcceptHoverEvents(true);
 
-    QString n = pStation->name();
-    p_InfoList = new QTableView();
-    p_InfoList->setModel(new InfoTableModel(n));
-    p_InfoList->setAutoScroll (false);
-    p_InfoList->horizontalHeader()->hide();
-    p_InfoList->verticalHeader()->hide();    
-
-    updateFact(std::make_tuple(n, "name", pStation->name()));
-    updateFact(std::make_tuple(n, "ipAddress", pStation->ipAddress()));
-    updateFact(std::make_tuple(n, "bwInUse", QString::number(pStation->bwInUse())));
-    updateFact(std::make_tuple(n, "bwNeeded", QString::number(pStation->bwNeeded())));
-    //updateFact(std::make_tuple(n, "satellite", pStation->satellite()));
-    updateFact(std::make_tuple(n, "status", pStation->status()));
+    pInfoList = new QTableView();
+    pInfoList->setModel(new InfoTableModel());
+    pInfoList->setAutoScroll (false);
+    pInfoList->horizontalHeader()->hide();
+    pInfoList->verticalHeader()->hide();
+    connect(pStation,SIGNAL(attrChanged(const QPair<QString,QString>&)),this,SLOT(updateFact(const QPair<QString,QString>&)));
+    pStation->refreshData();
 }
 
 QStationItem::~QStationItem()
 {
-    delete p_Ellipse;
-	delete p_InfoList;
+    delete pEllipse;
+    delete pInfoList->model();
+    delete pInfoList;
 }
 
 void QStationItem::updateColor()
@@ -70,7 +65,7 @@ void QStationItem::updateColor()
 
 void QStationItem::setColor(QColor qColor)
 {
-    p_Ellipse->setBrush((QBrush(qColor)));
+    pEllipse->setBrush((QBrush(qColor)));
 }
 
 void QStationItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -88,65 +83,55 @@ void QStationItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void QStationItem::hoverEnterEvent (QGraphicsSceneHoverEvent *event)
 {
    // ToDo: Fix warning "QGraphicsProxyWidget::setWidget: cannot embed widget *XXXXX; already embedded"
-   proxy = p_Ellipse->scene()->addWidget(p_InfoList);
+   proxy = pEllipse->scene()->addWidget(pInfoList);
    proxy->setPos(event->scenePos());
    proxy->resize (190,190);
 
-   p_InfoList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-   p_InfoList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-   p_InfoList->show();
+   pInfoList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   pInfoList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+   pInfoList->show();
 
    event->accept();
 }
 
 void QStationItem::hoverLeaveEvent (QGraphicsSceneHoverEvent *event)
 {    
-    p_InfoList->hide();
+    pInfoList->hide();
     event->accept();
 }
 
-void QStationItem::updateFact(std::tuple<QString, QString, QString> info)
+void QStationItem::updateFact(const QPair<QString, QString>& info)
 {
-	QString stationName, attrName, attrValue;
-	std::tie(stationName, attrName, attrValue) = info;
-    if (stationName == pStation->name())
-	{
-        InfoTableModel* tempModel = (InfoTableModel*) p_InfoList->model();
-        if (attrName == "name")
-        {
-            pStation->setName(attrValue);
-            tempModel->updateData(std::make_tuple(0,attrName,attrValue));
-        }
-        if (attrName == "ipAddress")
-        {
-            pStation->setIpAddress(attrValue);
-            tempModel->updateData(std::make_tuple(1,attrName,attrValue));
-        }
-		if (attrName == "bwInUse")
-		{
-            if (QString::number(pStation->bwInUse()) != attrValue) emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
-            pStation->setBwInUse(attrValue.toInt());
-            tempModel->updateData(std::make_tuple(2,attrName,attrValue));
-		}
-		if (attrName == "bwNeeded")
-		{
-            if (QString::number(pStation->bwNeeded()) != attrValue) emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
-            pStation->setBwNeeded(attrValue.toInt());
-            tempModel->updateData(std::make_tuple(3,attrName,attrValue));
-		}
-		if (attrName == "satellite")
-        {
-            //pStation->setSatellite(attrValue);
-            tempModel->updateData(std::make_tuple(4,attrName,attrValue));
-        }
-		if (attrName == "status")
-		{
-            if (pStation->status() != attrValue) emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
-            pStation->setStatus(attrValue);
-			updateColor();
-            tempModel->updateData(std::make_tuple(5,attrName,attrValue));
-		}
-	}
+    QString attrName = info.first, attrValue = info.second;
+    InfoTableModel* tempModel = (InfoTableModel*) pInfoList->model();
+    if (attrName == "Name")
+    {
+        tempModel->updateData(std::make_tuple(0,attrName,attrValue));
+    }
+    if (attrName == "IpAddress")
+    {
+        tempModel->updateData(std::make_tuple(1,attrName,attrValue));
+    }
+    if (attrName == "BwInUse")
+    {
+        emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
+        tempModel->updateData(std::make_tuple(2,attrName,attrValue));
+    }
+    if (attrName == "BwNeeded")
+    {
+        emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
+        tempModel->updateData(std::make_tuple(3,attrName,attrValue));
+    }
+    if (attrName == "Satellite")
+    {
+        tempModel->updateData(std::make_tuple(4,attrName,attrValue));
+    }
+    if (attrName == "Status")
+    {
+        emit valueChanged(pStation->name() + " " + attrName + " changed to " + attrValue);
+        updateColor();
+        tempModel->updateData(std::make_tuple(5,attrName,attrValue));
+    }
 }
 
 Station * QStationItem::station() const
