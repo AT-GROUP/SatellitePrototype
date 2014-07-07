@@ -24,7 +24,9 @@ class QSatelliteItem: public QObject, public QGraphicsItemGroup
         virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	signals:
-		void valueChanged(const QString& mess);
+        void valueChanged(const QString& mess);
+    public slots:
+        void updateFact(const QPair<QString, QString>& info);
 };
 
 #endif // QSATELLITEITEM_H

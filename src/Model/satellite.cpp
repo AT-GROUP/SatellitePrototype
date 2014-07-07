@@ -5,8 +5,8 @@ Satellite::Satellite(QString name, int maxBw, QPair<int,int> pos, QString ipAddr
 {
     setName(name);
     setStatus(status);
-    setMaxBw(maxBw);
-    setCurBw(curBw);
+    maxBw_ = maxBw;
+    curBw_ = curBw;
     setIpAddress(ipAddress);
     setStationCount(stationCount);
     pos_ = new QPointF(pos.first, pos.second);
@@ -50,34 +50,50 @@ QString Satellite::ipAddress() const
 void Satellite::setName(QString newName)
 {
     name_ = newName;
+    emit attrChanged(QPair<QString,QString>("Name",name_));
 }
 
 void Satellite::setMaxBw(int newMaxBw)
 {
     maxBw_ = newMaxBw;
+    emit attrChanged(QPair<QString,QString>("MaxBw",QString::number(maxBw_)));
 }
 
 void Satellite::setCurBw(int newCurBw)
 {
     curBw_ = newCurBw;
+    emit attrChanged(QPair<QString,QString>("CurBw",QString::number(curBw_)));
 }
 
 void Satellite::setIpAddress(QString newIpAddress)
 {
     ipAddress_ = newIpAddress;
+    emit attrChanged(QPair<QString,QString>("IpAddress",ipAddress_));
 }
 
 void Satellite::setStationCount(int newStationCount)
 {
     stationCount_ = newStationCount;
+    emit attrChanged(QPair<QString,QString>("StationCount",QString::number(stationCount_)));
 }
 
 void Satellite::setStatus(QString newStatus)
 {
     status_ = newStatus;
+    emit attrChanged(QPair<QString,QString>("Status",status_));
 }
 
 QPointF * Satellite::pos() const
 {
     return pos_;
+}
+
+void Satellite::refreshData()
+{
+    emit attrChanged(QPair<QString,QString>("Name",name_));
+    emit attrChanged(QPair<QString,QString>("IpAddress",ipAddress_));
+    emit attrChanged(QPair<QString,QString>("MaxBw",QString::number(maxBw_)));
+    emit attrChanged(QPair<QString,QString>("CurBw",QString::number(curBw_)));
+    emit attrChanged(QPair<QString,QString>("StationCount",QString::number(stationCount_)));
+    emit attrChanged(QPair<QString,QString>("Status",status_));
 }

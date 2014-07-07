@@ -20,22 +20,19 @@ QSatelliteItem::QSatelliteItem(Satellite *satellite, QObject *parent)
     QString n = pSatellite->name();
 
     pInfoList = new QTableView();
-    pInfoList->setModel(new InfoTableModel(n));
+    pInfoList->setModel(new InfoTableModel());
     pInfoList->setAutoScroll (false);
     pInfoList->horizontalHeader()->hide();
     pInfoList->verticalHeader()->hide();
 
-    updateFact(std::make_tuple(n, "name", pSatellite->name()));
-    updateFact(std::make_tuple(n, "ipAddress", pSatellite->ipAddress()));
-    updateFact(std::make_tuple(n, "maxBw",  QString::number(pSatellite->maxBw())));
-    updateFact(std::make_tuple(n, "curBw", QString::number(pSatellite->curBw())));
-    updateFact(std::make_tuple(n, "stationCount", QString::number(pSatellite->stationCount())));
-    updateFact(std::make_tuple(n, "status", pSatellite->status()));
+    connect(pSatellite,SIGNAL(attrChanged(const QPair<QString,QString>&)),this,SLOT(updateFact(const QPair<QString,QString>&)));
+    pSatellite->refreshData();
 }
 
 QSatelliteItem::~QSatelliteItem()
 {
 	delete icon;
+    delete pInfoList->model();
     delete pInfoList;
 }
 
@@ -71,48 +68,37 @@ void QSatelliteItem::hoverLeaveEvent (QGraphicsSceneHoverEvent *event)
     event->accept();
 }
 
-void QSatelliteItem::updateFact(std::tuple<QString, QString, QString> info)
+void QSatelliteItem::updateFact(const QPair<QString, QString>& info)
 {
-	QString satelliteName, attrName, attrValue;
-	std::tie(satelliteName, attrName, attrValue) = info;
-    if (satelliteName == pSatellite->name())
-	{
-        InfoTableModel* tempModel = (InfoTableModel*) pInfoList->model();
-        if (attrName == "name")
-        {
-            pSatellite->setName(attrValue);
-            tempModel->updateData(std::make_tuple(0,attrName,attrValue));
-        }
-		if (attrName == "ipAddress")
-        {
-            pSatellite->setIpAddress(attrValue);
-            tempModel->updateData(std::make_tuple(1,attrName,attrValue));
-        }
-        if (attrName == "stationCount")
-        {
-            if (QString::number(pSatellite->stationCount()) != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
-            pSatellite->setStationCount(attrValue.toInt());
-            tempModel->updateData(std::make_tuple(2,attrName,attrValue));
-        }
-		if (attrName == "maxBw")
-		{
-            if (QString::number(pSatellite->maxBw()) != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
-            pSatellite->setMaxBw(attrValue.toInt());
-            tempModel->updateData(std::make_tuple(3,attrName,attrValue));
-		}
-        if (attrName == "curBw")
-        {
-            if (QString::number(pSatellite->curBw()) != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
-            pSatellite->setCurBw(attrValue.toInt());
-            tempModel->updateData(std::make_tuple(4,attrName,attrValue));
-        }
-		if (attrName == "status")
-		{
-            if (pSatellite->status() != attrValue) emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
-            pSatellite->setStatus(attrValue);
-            tempModel->updateData(std::make_tuple(5,attrName,attrValue));
-		}
-	}
+    QString attrName = info.first, attrValue = info.second;
+    InfoTableModel* tempModel = (InfoTableModel*) pInfoList->model();
+    if (attrName == "Name")
+    {
+        tempModel->updateData(std::make_tuple(0,attrName,attrValue));
+    }
+    if (attrName == "IpAddress")
+    {
+        tempModel->updateData(std::make_tuple(1,attrName,attrValue));
+    }
+    if (attrName == "MaxBw")
+    {
+        emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+        tempModel->updateData(std::make_tuple(2,attrName,attrValue));
+    }
+    if (attrName == "CurBw")
+    {
+        emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+        tempModel->updateData(std::make_tuple(3,attrName,attrValue));
+    }
+    if (attrName == "StationCount")
+    {
+        tempModel->updateData(std::make_tuple(4,attrName,attrValue));
+    }
+    if (attrName == "Status")
+    {
+        emit valueChanged(pSatellite->name() + " " + attrName + " changed to " + attrValue);
+        tempModel->updateData(std::make_tuple(5,attrName,attrValue));
+    }
 }
 
 Satellite * QSatelliteItem::satellite() const

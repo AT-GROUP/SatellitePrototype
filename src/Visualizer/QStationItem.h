@@ -10,16 +10,15 @@ class QStationItem: public QObject, public QGraphicsItemGroup
 {
 	Q_OBJECT
     private:
-        QGraphicsEllipseItem *p_Ellipse;
+        QGraphicsEllipseItem *pEllipse;
 		QGraphicsProxyWidget *proxy;
-		QTableView *p_InfoList;
+        QTableView *pInfoList;
         Station *pStation;
 		void updateColor();
 		void setColor(QColor qColor);
     public:
         QStationItem(Station* station, QObject* parent = 0);
         ~QStationItem();
-		void updateFact(std::tuple<QString, QString, QString> info);
         Station * station() const;
     protected:
         virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -27,6 +26,8 @@ class QStationItem: public QObject, public QGraphicsItemGroup
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	signals:
 		void valueChanged(const QString& mess);
+    public slots:
+        void updateFact(const QPair<QString, QString>& info);
 };
 
 #endif // QSTATIONITEM_H
