@@ -15,8 +15,9 @@ typedef std::pair<Times, Values> Data;
 
 #define INTERVAL 1000
 
-class StatisticCollector : QObject
+class StatisticCollector : public QObject
 {
+    Q_OBJECT
 private:
     std::unordered_map<Satellite*, Data> statistics;
     QTimer* timer; //using this timer temporary
@@ -27,6 +28,8 @@ public:
     Data* getData(Satellite* sat);
 public slots:
     void fetchData();
+signals:
+    void dataUpdated();
 };
 
 #endif // STATISTICCOLLECTOR_H

@@ -11,12 +11,15 @@ class GraphicsWidget : public QCustomPlot
 private:
     Data* statisticsData;
     Satellite* sat;
+
+    void refreshGraphData();
 public:
     explicit GraphicsWidget(StatisticCollector* sc, Satellite* sat, QWidget *parent = 0);
 
 signals:
 
 public slots:
+    void updateGraph();
 
 };
 

@@ -11,8 +11,25 @@ GraphicsWidget::GraphicsWidget(StatisticCollector *sc, Satellite *sat, QWidget *
     satName->position->setType(QCPItemPosition::ptAxisRectRatio);
     satName->position->setCoords(0.5, 0);
     satName->setText(sat->name());
+    //satName->setText(QString::number(statisticsData->first.size()));
     satName->setFont(QFont(font().family(), 16));
     satName->setPen(QPen(Qt::black));
     addGraph();
+    refreshGraphData();
+    xAxis->setLabel("Time");
+    yAxis->setLabel("curBw");
+    connect(sc, SIGNAL(dataUpdated()), this, SLOT(updateGraph()));
+}
+
+void GraphicsWidget::updateGraph()
+{
+    refreshGraphData();
+    replot();
+}
+
+void GraphicsWidget::refreshGraphData()
+{
     graph(0)->setData(statisticsData->first, statisticsData->second);
+    xAxis->setRange(0, statisticsData->first.back());
+    yAxis->setRange(0, 1.1 * sat->maxBw());
 }

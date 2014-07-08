@@ -7,6 +7,7 @@
 #include <qdebug.h>
 #include <qsignalmapper.h>
 #include "ConfigDialog.h"
+#include "GraphDialog.h"
 #include "../../src/Model/satellite.h"
 
 ModelVisualizer::ModelVisualizer(QWidget *parent):
@@ -104,6 +105,7 @@ void ModelVisualizer::initStatistics()
 {
     QVector<Satellite*>* sats = pModel->satelliteList();
     statistics = new StatisticCollector(sats, 0);
+    statistics->start();
 }
 
 void ModelVisualizer::addMessageToEventsList(const QString& message)
@@ -137,7 +139,8 @@ void ModelVisualizer::mapZoom(qreal factor, QPointF centerPoint)
 
 void ModelVisualizer::showGraphsWindow()
 {
-    // ЗДЕСЬ БУДЕТ ВЫЗЫВАТЬСЯ ГРАФОПОСТРОИТЕЛЬ
+    GraphDialog* gd = new GraphDialog(pModel->satelliteList(), statistics, this);
+    gd->show();
 }
 
 void ModelVisualizer::showConfigWindow()
