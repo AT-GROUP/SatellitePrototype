@@ -15,9 +15,11 @@ void StatisticCollector::addData(Satellite* sat, Time t)
         if (statistics[sat].first.size() >= 2)
             if (statistics[sat].second.back() == statistics[sat].second[statistics[sat].second.size() - 2])
             {
-                statistics[sat].first.pop_back();
-                statistics[sat].second.pop_back();
-                //printf("lol %d\n", statistics[sat].first.size()); //check optimisation
+                if (sat->curBw() == statistics[sat].second.back())
+                {
+                    statistics[sat].first.pop_back();
+                    statistics[sat].second.pop_back();
+                }
             }
         //statistics[sat].first.push_back(t);
         //statistics[sat].second.push_back(statistics[sat].second.back());
