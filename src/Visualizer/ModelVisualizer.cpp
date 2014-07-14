@@ -135,7 +135,7 @@ void ModelVisualizer::showGraphsWindow()
 
 void ModelVisualizer::showConfigWindow()
 {
-    ConfigDialog* g1 = new ConfigDialog(this);
+    ConfigDialog* g1 = new ConfigDialog(pModel->stationList(), pModel->satelliteList(), this);
     g1->show();
 }
 

@@ -39,7 +39,7 @@ CommonSettings::CommonSettings(QWidget *parent)
 
 
 
-SatelliteSettings::SatelliteSettings(QWidget *parent)
+SatelliteSettings::SatelliteSettings(QVector<Satellite*> *pSatelliteList, QWidget *parent)
     : QWidget(parent)
 {
     QGroupBox *settingsGroup = new QGroupBox(tr("Station configuration"));
@@ -47,7 +47,10 @@ SatelliteSettings::SatelliteSettings(QWidget *parent)
     QLabel *satelliteLabel = new QLabel(tr("Satellite:"));
     QComboBox *satelliteCombo = new QComboBox;
 
-    // Add satellites to combobox
+    for (QVector<Satellite*>::iterator it = pSatelliteList->begin(); it != pSatelliteList->end(); it++)
+    {
+        satelliteCombo->addItem((*it)->name());
+    }
 
     QHBoxLayout *satelliteSettingsLayout = new QHBoxLayout;
     satelliteSettingsLayout->addWidget(satelliteLabel);
@@ -63,7 +66,7 @@ SatelliteSettings::SatelliteSettings(QWidget *parent)
     setLayout(mainLayout);
 }
 
-StationSettings::StationSettings(QWidget *parent)
+StationSettings::StationSettings(QVector<Station*> *pStationList, QWidget *parent)
     : QWidget(parent)
 {
     QGroupBox *settingsGroup = new QGroupBox(tr("Station configuration"));
@@ -71,7 +74,10 @@ StationSettings::StationSettings(QWidget *parent)
     QLabel *stationLabel = new QLabel(tr("Station:"));
     QComboBox *stationCombo = new QComboBox;
 
-    // Add stations to combobox
+    for (QVector<Station*>::iterator it = pStationList->begin(); it != pStationList->end(); it++)
+    {
+        stationCombo->addItem((*it)->name());
+    }
 
     QHBoxLayout *stationSettingsLayout = new QHBoxLayout;
     stationSettingsLayout->addWidget(stationLabel);
