@@ -37,6 +37,7 @@ class ModelVisualizer : public QWidget
 		void addMessageToEventsList(const QString& message);
 		void showGraphsWindow();
         void showConfigWindow();
+        void showMessageWindow(const QString &recomendation);
 	protected:
 		virtual void wheelEvent(QWheelEvent* event);
 	private:

@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+<settings automatic_decisions = "true">
 <objects>
-  <stations>
-      <satellite name="Intelsat" posX="200" posY="100" maxBw="3000">
-	<station name="Moscow" posX="800" posY="200" satellite="Intelsat" failure="0.01"/>
-	<station name="Bryansk" posX="840" posY="250" satellite="Intelsat" failure="0.01"/>
-	<station name="Voronej" posX="370" posY="250" satellite="Intelsat" failure="0.01"/>
-	<station name="Saratov" posX="450" posY="250" satellite="Intelsat" failure="0.01"/>
-	<station name="Samara" posX="400" posY="277" satellite="Intelsat" failure="0.01"/>
-      </satellite>
-      <satellite name="AM5" posX="1000" posY="100" maxBw="2000">
-	<station name="Magadan" posX="200" posY="400" satellite="AM5" failure="0.01"/>
-	<station name="Kazan" posX="700" posY="240" satellite="AM5" failure="0.01"/>
-	<station name="Kamchatka" posX="1000" posY="250" satellite="AM5" failure="0.01"/>
-	<station name="Irkutsk" posX="905" posY="470" satellite="AM5" failure="0.01"/>
-      </satellite>
-   </satellites>
+    <satellite name="Intelsat" posX="200" posY="100" maxBw="3000">
+        <station name="Moscow" posX="800" posY="200" satellite="Intelsat" failure="0.01"/>
+        <station name="Bryansk" posX="840" posY="250" satellite="Intelsat" failure="0.01"/>
+        <station name="Voronej" posX="370" posY="250" satellite="Intelsat" failure="0.01"/>
+        <station name="Saratov" posX="450" posY="250" satellite="Intelsat" failure="0.01"/>
+        <station name="Samara" posX="400" posY="277" satellite="Intelsat" failure="0.01"/>
+    </satellite>
+    <satellite name="AM5" posX="1000" posY="100" maxBw="2000">
+        <station name="Magadan" posX="200" posY="400" satellite="AM5" failure="0.01"/>
+        <station name="Kazan" posX="700" posY="240" satellite="AM5" failure="0.01"/>
+        <station name="Kamchatka" posX="1000" posY="250" satellite="AM5" failure="0.01"/>
+        <station name="Irkutsk" posX="905" posY="470" satellite="AM5" failure="0.01"/>
+    </satellite>
 </objects>
+</config>

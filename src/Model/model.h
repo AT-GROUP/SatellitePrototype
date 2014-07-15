@@ -5,11 +5,13 @@
 #include "satellite.h"
 #include "station.h"
 #include <QTime>
+#include <QObject>
 
-class Model
+class Model : public QObject
 {
+    Q_OBJECT
     public:
-        Model();
+        Model(QObject *parent = 0);
         ~Model();
         QVector<Station*>* stationList() const;
         QVector<Satellite*>* satelliteList() const;
@@ -17,6 +19,7 @@ class Model
     private:
         QVector<Station*> *pStationList;
         QVector<Satellite*> *pSatelliteList;
+        QVector<QString> *pSettingsList;
         int tact;
         bool critHours;
         void loadInitState();
@@ -25,15 +28,8 @@ class Model
         void phase1();
         void phase2();
         void phase3();
-
-
-
-        /*
-            Пока что не используется
-            QTime *pTime;
-            QTime *pBeginCritTime;
-            QTime *pEndCritTime;
-        */
+    signals:
+        void showRecomendation(const QString& recomendation);
 };
 
 #endif // MODEL_H

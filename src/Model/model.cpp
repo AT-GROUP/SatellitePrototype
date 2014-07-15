@@ -2,17 +2,21 @@
 #include <QFile>
 #include <QXmlStreamReader>
 
-Model::Model()
+Model::Model(QObject *parent)
 {
+    Q_UNUSED(parent);
     pSatelliteList = new QVector<Satellite*>();
     pStationList = new QVector<Station*>();
+    pSettingsList = new QVector<QString>();
     tact = 0;
     loadInitState();
 }
+
 Model::~Model()
 {
     delete pSatelliteList;
     delete pStationList;
+    delete pSettingsList;
 }
 
 QVector<Station*>* Model::stationList() const
@@ -47,6 +51,8 @@ void Model::loadInitState ()
             if (xml.name() == "station")
                 pStationList->append(new Station(attrs.value("name").toString(),pSatelliteList->last(),
                                                  QPair<int,int>(attrs.value("posX").toInt(),attrs.value("posY").toInt())));
+            if (xml.name() == "settings")
+                pSettingsList->append(QString(attrs.value("automatic_decisions").toString()));
         }
     }
     pFile->close();
@@ -83,25 +89,32 @@ void Model::phase1()
     for (QVector<Satellite*>::iterator it = pSatelliteList->begin(); it != pSatelliteList->end(); it++)
     {
         if ((*it)->status() == "Offline") continue;
-
         //(*it)->setStatus("Online");
         (*it)->setStationCount(0);
         if ((*it)->maxBw()/((*it)->stationCount()+1) >= 512)
         {
+            if (pSettingsList->at(0) == "true") emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 512");
             (*it)->sharingBw = 512;
+            continue;
         }
         if ((*it)->maxBw()/((*it)->stationCount()+1) >= 384)
         {
+            emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 384");
             (*it)->sharingBw = 384;
+            continue;
         }
         if ((*it)->maxBw()/((*it)->stationCount()+1) >= 256)
         {
+            emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 256");
             (*it)->sharingBw = 256;
+            continue;
         }
         if ((*it)->maxBw()/((*it)->stationCount()+1) < 256)
         {
+            emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 256");
             (*it)->setStatus("Overload");
             (*it)->sharingBw = 256;
+            continue;
         }
     }
 }

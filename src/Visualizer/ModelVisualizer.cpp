@@ -8,6 +8,7 @@
 #include <qsignalmapper.h>
 #include "ConfigDialog.h"
 #include "../../src/Model/satellite.h"
+#include <QMessageBox>
 
 ModelVisualizer::ModelVisualizer(QWidget *parent):
     QWidget(parent)
@@ -72,6 +73,8 @@ void ModelVisualizer::createMenu()
     connect(showInfo, SIGNAL(triggered()), this, SLOT(showGraphsWindow()));
     pMainMenu->addAction(showInfo);
     connect(mSigmapper, SIGNAL(mapped(QString)), this, SLOT(addMessageToEventsList(const QString&)));
+
+    connect(pModel, SIGNAL(showRecomendation(const QString&)), this, SLOT(showMessageWindow(const QString&)));
 }
 
 void ModelVisualizer::createLayout()
@@ -142,4 +145,18 @@ void ModelVisualizer::showConfigWindow()
 void ModelVisualizer::processModelTact()
 {
     pModel->processModelTact();
+}
+
+void ModelVisualizer::showMessageWindow(const QString &recomendation)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Apply recomendation?", recomendation, QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        qDebug() << "Yes was clicked";
+    }
+    else
+        {
+            qDebug() << "Yes was *not* clicked";
+        }
 }
