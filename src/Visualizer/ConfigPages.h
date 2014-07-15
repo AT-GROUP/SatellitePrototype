@@ -2,6 +2,8 @@
 #define PAGES_H
 
 #include <QWidget>
+#include <../../src/Model/satellite.h>
+#include <../../src/Model/station.h>
 
 class CommonSettings : public QWidget
 {
@@ -12,13 +14,13 @@ class CommonSettings : public QWidget
 class SatelliteSettings : public QWidget
 {
     public:
-        SatelliteSettings(QWidget *parent = 0);
+        SatelliteSettings(QVector<Satellite*> *pSatelliteList, QWidget *parent = 0);
 };
 
 class StationSettings : public QWidget
 {
     public:
-        StationSettings(QWidget *parent = 0);
+        StationSettings(QVector<Station*> *pStationList, QWidget *parent = 0);
 };
 
 #endif

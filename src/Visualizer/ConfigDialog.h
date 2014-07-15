@@ -5,6 +5,8 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QStackedWidget>
+#include <../../src/Model/satellite.h>
+#include <../../src/Model/station.h>
 
 class QListWidget;
 class QListWidgetItem;
@@ -15,7 +17,7 @@ class ConfigDialog : public QDialog
     Q_OBJECT
 
     public:
-        ConfigDialog(QWidget* parent = 0);
+        ConfigDialog(QVector<Station*> *pStationList, QVector<Satellite*> *pSatelliteList, QWidget* parent = 0);
 
     public slots:
         void changePage(QListWidgetItem *current, QListWidgetItem *previous);

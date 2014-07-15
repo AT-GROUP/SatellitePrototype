@@ -83,26 +83,26 @@ void Model::phase1()
     for (QVector<Satellite*>::iterator it = pSatelliteList->begin(); it != pSatelliteList->end(); it++)
     {
         if ((*it)->status() == "Offline") continue;
-        (*it)->setCurBw((*it)->maxBw());
-        (*it)->setStatus("Online");/*
+
+        //(*it)->setStatus("Online");
+        (*it)->setStationCount(0);
         if ((*it)->maxBw()/((*it)->stationCount()+1) >= 512)
         {
-            (*it)->setvalBw() = 512;
+            (*it)->sharingBw = 512;
         }
         if ((*it)->maxBw()/((*it)->stationCount()+1) >= 384)
         {
-            (*it)->avalBw() = 384;
+            (*it)->sharingBw = 384;
         }
-        if ((*it)->maxBw/((*it)->stationCount+1) >= 256)
+        if ((*it)->maxBw()/((*it)->stationCount()+1) >= 256)
         {
-            (*it)->avalBw = 256;
+            (*it)->sharingBw = 256;
         }
-        if ((*it)->maxBw/((*it)->stationCount+1) < 256)
+        if ((*it)->maxBw()/((*it)->stationCount()+1) < 256)
         {
-            (*it)->avalBw = 256;
-            (*it)->status = "Overload";
-        }*/
-        (*it)->setStationCount(0);
+            (*it)->setStatus("Overload");
+            (*it)->sharingBw = 256;
+        }
     }
 }
 
@@ -134,7 +134,7 @@ void Model::phase3()
         if ((*it)->status() == "Offline") (*it)->setBwInUse(0);
         if ((*it)->status() == "Calling")
         {
-            if ((*it)->satellite()->curBw() > 256)
+            if ((*it)->satellite()->avalBw() > (*it)->satellite()->sharingBw)
             {
                 (*it)->setStatus("Connected");
             }
@@ -146,7 +146,7 @@ void Model::phase3()
         if ((*it)->status() == "StandBy")
         {
             (*it)->setBwInUse(0);
-            if ((*it)->satellite()->curBw() > 256)
+            if ((*it)->satellite()->avalBw() > (*it)->satellite()->sharingBw)
             {
                 (*it)->setStatus("Connected");
             }
@@ -154,7 +154,7 @@ void Model::phase3()
         if ((*it)->status() == "Connected")
         {
             (*it)->setBwNeeded(512);
-            (*it)->setBwInUse(256);
+            (*it)->setBwInUse((*it)->satellite()->sharingBw);
         }
     }
 }

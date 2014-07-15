@@ -13,6 +13,7 @@ class Satellite : public QObject
                   QString ipAddress = "192.168.1.1", int curBw = 0, int stationCount = 0,
                   QString status = "Online", QObject* parent = 0);
 
+        int sharingBw;
         QString name() const;
         QString ipAddress() const;
         int maxBw() const;

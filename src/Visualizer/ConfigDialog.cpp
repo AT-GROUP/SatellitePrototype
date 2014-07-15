@@ -6,7 +6,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-ConfigDialog::ConfigDialog(QWidget* parent)
+ConfigDialog::ConfigDialog(QVector<Station*> *pStationList, QVector<Satellite*> *pSatelliteList, QWidget* parent)
 {
     Q_UNUSED(parent);
 
@@ -19,9 +19,9 @@ ConfigDialog::ConfigDialog(QWidget* parent)
     pContentsWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     pPagesWidget = new QStackedWidget;
-    pPagesWidget->addWidget(new CommonSettings);
-    pPagesWidget->addWidget(new SatelliteSettings);
-    pPagesWidget->addWidget(new StationSettings);
+    pPagesWidget->addWidget(new CommonSettings());
+    pPagesWidget->addWidget(new SatelliteSettings(pSatelliteList));
+    pPagesWidget->addWidget(new StationSettings(pStationList));
     pPagesWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QPushButton *closeButton = new QPushButton(tr("Apply and close"));
