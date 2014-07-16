@@ -3,6 +3,8 @@
 
 #include "QSatelliteItem.h"
 #include "QStationItem.h"
+#include "StatisticCollector.h"
+#include "GraphicsWidget.h"
 #include <QWidget>
 #include <QGraphicsView>
 #include <QGridLayout>
@@ -22,7 +24,7 @@ class ModelVisualizer : public QWidget
         QListWidget *pEventList;
         QMenuBar *pMainMenu;
         Model *pModel;
-
+        StatisticCollector* statistics;
 	public:
 		explicit ModelVisualizer(QWidget *parent = 0);
 		~ModelVisualizer();
@@ -47,6 +49,7 @@ class ModelVisualizer : public QWidget
 		void createWidgets();
 		void createLayout();
         void addStations();
+        void initStatistics();
 	signals:
 		void pause();
 };
