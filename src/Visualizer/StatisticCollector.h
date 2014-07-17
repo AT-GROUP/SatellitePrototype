@@ -24,6 +24,7 @@ private:
 public:
     StatisticCollector(QVector<Satellite*>* satellites, Time t);
     void start(); //listen to timer and collect data
+    void pause(); //use when simulation is paused
     void addData(Satellite* sat, Time t);
     Data* getData(Satellite* sat);
 public slots:

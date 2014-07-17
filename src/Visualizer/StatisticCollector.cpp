@@ -6,6 +6,7 @@ StatisticCollector::StatisticCollector(QVector<Satellite *> *satellites, Time t)
     timer = new QTimer(this);
     for(auto sat = satellites->begin(); sat != satellites->end(); sat++)
         addData(*sat, 0); //0 is temporary
+    connect(timer, SIGNAL(timeout()), this, SLOT(fetchData()));
 }
 
 void StatisticCollector::addData(Satellite* sat, Time t)
@@ -36,8 +37,12 @@ Data* StatisticCollector::getData(Satellite* sat)
 
 void StatisticCollector::start()
 {
-    connect(timer, SIGNAL(timeout()), this, SLOT(fetchData()));
     timer->start(INTERVAL);
+}
+
+void StatisticCollector::pause()
+{
+    timer->stop();
 }
 
 void StatisticCollector::fetchData()
