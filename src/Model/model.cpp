@@ -50,7 +50,8 @@ void Model::loadInitState ()
                                                  QPair<int,int>(attrs.value("posX").toInt(),attrs.value("posY").toInt())));
             if (xml.name() == "station")
                 pStationList->append(new Station(attrs.value("name").toString(),pSatelliteList->last(),
-                                                 QPair<int,int>(attrs.value("posX").toInt(),attrs.value("posY").toInt())));
+                                                 QPair<int,int>(attrs.value("posX").toInt(),attrs.value("posY").toInt()),
+                                                 attrs.value("call").toInt(),attrs.value("failure").toInt()));
             if (xml.name() == "settings")
                 pSettingsList->append(QString(attrs.value("automatic_decisions").toString()));
         }
@@ -86,34 +87,40 @@ void Model::phase0()
 
 void Model::phase1()
 {
+    int maximumBwPerStation = 512;
+    int medianBwPerStation = 384;
+    int minimalBwPerStation = 256;
     for (QVector<Satellite*>::iterator it = pSatelliteList->begin(); it != pSatelliteList->end(); it++)
     {
         if ((*it)->status() == "Offline") continue;
         //(*it)->setStatus("Online");
-        (*it)->setStationCount(0);
-        if ((*it)->maxBw()/((*it)->stationCount()+1) >= 512)
+        if ((*it)->maxBw() >= ((*it)->stationCount()*maximumBwPerStation))
         {
             if (pSettingsList->at(0) == "true") emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 512");
-            (*it)->sharingBw = 512;
+            (*it)->sharingBw = maximumBwPerStation;
+            (*it)->setStationCount(0);
             continue;
         }
-        if ((*it)->maxBw()/((*it)->stationCount()+1) >= 384)
+        if ((*it)->maxBw() >= ((*it)->stationCount()*medianBwPerStation))
         {
-            emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 384");
+            if (pSettingsList->at(0) == "true") emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 384");
             (*it)->sharingBw = 384;
+            (*it)->setStationCount(0);
             continue;
         }
-        if ((*it)->maxBw()/((*it)->stationCount()+1) >= 256)
+        if ((*it)->maxBw() >= ((*it)->stationCount()*minimalBwPerStation))
         {
-            emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 256");
+            if (pSettingsList->at(0) == "true") emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 256");
             (*it)->sharingBw = 256;
+            (*it)->setStationCount(0);
             continue;
         }
-        if ((*it)->maxBw()/((*it)->stationCount()+1) < 256)
+        if ((*it)->maxBw() <= ((*it)->stationCount()*minimalBwPerStation))
         {
-            emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 256");
+            if (pSettingsList->at(0) == "true") emit showRecomendation("Switch " + (*it)->name() + " bw for each station to 256");
             (*it)->setStatus("Overload");
             (*it)->sharingBw = 256;
+            (*it)->setStationCount(0);
             continue;
         }
     }
@@ -123,7 +130,9 @@ void Model::phase2()
 {
     for (QVector<Station*>::iterator it = pStationList->begin(); it != pStationList->end(); it++)
     {
-        if ((*it)->status() == "Online") (*it)->setBwNeeded(random()%5);
+        if ((*it)->groundConnectionAval() > 0) (*it)->decGroundConnectionAval();
+                else (*it)->setBwInUse(0);
+        if ((*it)->status() == "Online") (*it)->setBwNeeded(random()%6 + 1);
         if ((*it)->status() == "Offline")
         {
             (*it)->setBwNeeded(0);
@@ -133,6 +142,8 @@ void Model::phase2()
         if ((*it)->status() == "StandBy") (*it)->setBwNeeded(512);
         if ((*it)->status() == "Connected") (*it)->setBwNeeded(512);
         (*it)->satellite()->setStationCount((*it)->satellite()->stationCount()+1);
+        if (((*it)->groundConnectionAval() == 0) && ((*it)->failureChance() > random()%100))
+            (*it)->setGroundConnectionAval(rand()%4+3);
     }
 }
 
@@ -142,7 +153,7 @@ void Model::phase3()
     {
         if ((*it)->status() == "Online")
         {
-            (*it)->setBwInUse((*it)->bwNeeded());
+            if ((*it)->groundConnectionAval() != 0) (*it)->setBwInUse((*it)->bwNeeded());
         }
         if ((*it)->status() == "Offline") (*it)->setBwInUse(0);
         if ((*it)->status() == "Calling")
@@ -167,7 +178,7 @@ void Model::phase3()
         if ((*it)->status() == "Connected")
         {
             (*it)->setBwNeeded(512);
-            (*it)->setBwInUse((*it)->satellite()->sharingBw);
+            if ((*it)->groundConnectionAval() != 0) (*it)->setBwInUse((*it)->satellite()->sharingBw);
         }
     }
 }

@@ -1,15 +1,19 @@
 #include "StationDataTable.h"
 #include <QStringList>
 #include <cstdio> //for debug
+#include <QHeaderView>
 
 StationDataTable::StationDataTable(StatisticCollector* sc, Satellite *sat, Model *mod, QWidget *parent) :
     QTableWidget(parent)
 {
     this->sat = sat;
     this->mod = mod;
-    setColumnCount(5);
-    QStringList captions = {"name", "ipAddress", "bwNeeded", "bwInUse", "status"};
+    setColumnCount(6);
+    QStringList captions = {"Name", "IpAddress", "BwNeeded", "BwInUse", "Status", "Ground"};
     setHorizontalHeaderLabels(captions);
+    resizeColumnsToContents();
+    //horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+
     refreshData();
     connect(sc, SIGNAL(dataUpdated()), this, SLOT(refreshData()));
 }
@@ -28,6 +32,7 @@ void StationDataTable::refreshData()
             setItem(0, 2, new QTableWidgetItem(QString::number((*station)->bwNeeded())));
             setItem(0, 3, new QTableWidgetItem(QString::number((*station)->bwInUse())));
             setItem(0, 4, new QTableWidgetItem((*station)->status()));
+            setItem(0, 5, new QTableWidgetItem(QString::number((*station)->groundConnectionAval())));
         }
     }
 }

@@ -1,7 +1,7 @@
 #include "station.h"
 
 
-Station::Station(QString name, Satellite* satellite, QPair<int,int> pos, QString ipAddress, int bwNeeded, int bwInUse, QString status, QObject* parent)
+Station::Station(QString name, Satellite* satellite, QPair<int,int> pos, int callChance, int failureChance, QString ipAddress, int bwNeeded, int bwInUse, QString status, QObject* parent)
     :QObject(parent)
 {
     setName(name);
@@ -10,8 +10,9 @@ Station::Station(QString name, Satellite* satellite, QPair<int,int> pos, QString
     bwNeeded_ = bwNeeded;
     bwInUse_ = bwInUse;
     setIpAddress(ipAddress);
-    callChance = 2;
-    failureChance = 1;
+    callChance_ = callChance;
+    failureChance_ = failureChance;
+    groundConnection_ = 0;
     pos_ = new QPointF(pos.first, pos.second);
 }
 
@@ -104,4 +105,26 @@ void Station::refreshData()
     emit attrChanged(QPair<QString,QString>("BwInUse",QString::number(bwInUse_)));
     emit attrChanged(QPair<QString,QString>("Satellite",satellite_->name()));
     emit attrChanged(QPair<QString,QString>("Status",status_));
+}
+
+int Station::callChance() const
+{
+    return callChance_;
+}
+int Station::failureChance() const
+{
+    return failureChance_;
+}
+int Station::groundConnectionAval() const
+{
+    return groundConnection_;
+}
+void Station::setGroundConnectionAval(int groundConnection)
+{
+    groundConnection_ = groundConnection;
+}
+
+void Station::decGroundConnectionAval()
+{
+    --groundConnection_;
 }
