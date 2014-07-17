@@ -142,7 +142,7 @@ void ModelVisualizer::mapZoom(qreal factor, QPointF centerPoint)
 
 void ModelVisualizer::showGraphsWindow()
 {
-    GraphDialog* gd = new GraphDialog(pModel->satelliteList(), statistics, this);
+    GraphDialog* gd = new GraphDialog(pModel, statistics, this);
     gd->show();
 }
 
