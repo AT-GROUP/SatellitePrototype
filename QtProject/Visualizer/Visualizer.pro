@@ -15,7 +15,8 @@ SOURCES += \
     ../../src/Visualizer/StatisticCollector.cpp \
     ../../src/Visualizer/qcustomplot.cpp \
     ../../src/Visualizer/GraphicsWidget.cpp \
-    ../../src/Visualizer/GraphDialog.cpp
+    ../../src/Visualizer/GraphDialog.cpp \
+    ../../src/Visualizer/StationDataTable.cpp
 HEADERS  += \
     ../../src/Visualizer/ConfigDialog.h \
     ../../src/Visualizer/ConfigPages.h \
@@ -26,7 +27,8 @@ HEADERS  += \
     ../../src/Visualizer/StatisticCollector.h \
     ../../src/Visualizer/qcustomplot.h \
     ../../src/Visualizer/GraphicsWidget.h \
-    ../../src/Visualizer/GraphDialog.h
+    ../../src/Visualizer/GraphDialog.h \
+    ../../src/Visualizer/StationDataTable.h
 
 RESOURCES += \
     ../../src/Visualizer/Resources.qrc

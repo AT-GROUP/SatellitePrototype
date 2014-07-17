@@ -18,6 +18,7 @@ GraphicsWidget::GraphicsWidget(StatisticCollector *sc, Satellite *sat, QWidget *
     refreshGraphData();
     xAxis->setLabel("Time");
     yAxis->setLabel("curBw");
+    setMinimumSize(400, 300);
     connect(sc, SIGNAL(dataUpdated()), this, SLOT(updateGraph()));
 }
 

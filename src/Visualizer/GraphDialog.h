@@ -3,12 +3,13 @@
 
 #include <QDialog>
 #include "GraphicsWidget.h"
+#include "StationDataTable.h"
 
 class GraphDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit GraphDialog(QVector<Satellite*>* satellites, StatisticCollector* sc, QWidget *parent = 0);
+    explicit GraphDialog(Model* mod, StatisticCollector* sc, QWidget *parent = 0);
 
 signals:
 
