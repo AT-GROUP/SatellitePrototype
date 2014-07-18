@@ -115,6 +115,16 @@ void ModelVisualizer::addMessageToEventsList(const QString& message)
 {
     pEventList->addItem(message);
     pEventList->scrollToBottom();
+    //temp workaround for Issue #8
+    if(message.compare("Simulation paused") == 0)
+    {
+        statistics->pause();
+    }
+    else if (message.compare("Simulation continued") == 0)
+    {
+        statistics->start();
+    }
+    //
 }
 
 void ModelVisualizer::wheelEvent(QWheelEvent * event)
