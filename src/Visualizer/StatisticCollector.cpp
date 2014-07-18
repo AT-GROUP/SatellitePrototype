@@ -37,7 +37,7 @@ Data* StatisticCollector::getData(Satellite* sat)
 
 void StatisticCollector::start()
 {
-    timer->start(INTERVAL);
+    timer->start(100);
 }
 
 void StatisticCollector::pause()

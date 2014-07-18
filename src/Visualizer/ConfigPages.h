@@ -20,7 +20,7 @@ class SatelliteSettings : public QWidget
 class StationSettings : public QWidget
 {
     public:
-        StationSettings(QVector<Station*> *pStationList, QWidget *parent = 0);
+        StationSettings(QVector<Station*> *pStationList, QVector<Satellite*> *pSatelliteList, QWidget *parent = 0);
 };
 
 #endif

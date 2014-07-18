@@ -63,7 +63,7 @@ void Model::loadInitState ()
 void Model::processModelTact()
 {
     tact++;
-    if (tact % 9 == 0) phase0 ();
+    if (tact % 30 == 0) phase0 ();
     phase1();
     phase2();
     phase3();

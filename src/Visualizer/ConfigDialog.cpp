@@ -21,7 +21,7 @@ ConfigDialog::ConfigDialog(QVector<Station*> *pStationList, QVector<Satellite*> 
     pPagesWidget = new QStackedWidget;
     pPagesWidget->addWidget(new CommonSettings());
     pPagesWidget->addWidget(new SatelliteSettings(pSatelliteList));
-    pPagesWidget->addWidget(new StationSettings(pStationList));
+    pPagesWidget->addWidget(new StationSettings(pStationList, pSatelliteList));
     pPagesWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QPushButton *closeButton = new QPushButton(tr("Apply and close"));
@@ -47,6 +47,7 @@ ConfigDialog::ConfigDialog(QVector<Station*> *pStationList, QVector<Satellite*> 
     setLayout(mainLayout);
 
     setWindowTitle(tr("Config Dialog"));
+    resize(600,400);
 }
 
 void ConfigDialog::createIcons()
