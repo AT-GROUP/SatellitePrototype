@@ -21,6 +21,7 @@ class StatisticCollector : public QObject
 private:
     std::unordered_map<Satellite*, Data> statistics;
     QTimer* timer; //using this timer temporary
+    Time time;
 public:
     StatisticCollector(QVector<Satellite*>* satellites, Time t);
     void start(); //listen to timer and collect data

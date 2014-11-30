@@ -1,11 +1,15 @@
 #include "StatisticCollector.h"
 //#include <cstdio>
+#include <ctime>
 
-StatisticCollector::StatisticCollector(QVector<Satellite *> *satellites, Time t) : QObject()
+StatisticCollector::StatisticCollector(QVector<Satellite *> *satellites, Time t = 0) : QObject()
 {
     timer = new QTimer(this);
+    time = t;
+    if(time == 0)
+        time = std::time(NULL);
     for(auto sat = satellites->begin(); sat != satellites->end(); sat++)
-        addData(*sat, 0); //0 is temporary
+        addData(*sat, time); //0 is temporary
     connect(timer, SIGNAL(timeout()), this, SLOT(fetchData()));
 }
 
@@ -41,8 +45,7 @@ void StatisticCollector::pause()
 
 void StatisticCollector::fetchData()
 {
-    static Time time = 0;
-    time += INTERVAL / 1000;
+    time += (double)INTERVAL / 1000;
     for(auto sat = statistics.begin(); sat != statistics.end(); ++sat)
     {
         addData(sat->first, time);

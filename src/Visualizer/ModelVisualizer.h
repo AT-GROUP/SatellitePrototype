@@ -12,6 +12,7 @@
 #include <QXmlStreamReader>
 #include <qmenubar.h>
 #include "../../src/Model/model.h"
+#include "../SNMP/RealWorld.h"
 
 class ModelVisualizer : public QWidget
 {
@@ -24,6 +25,7 @@ class ModelVisualizer : public QWidget
         QListWidget *pEventList;
         QMenuBar *pMainMenu;
         Model *pModel;
+        RealWorld *pWorld;
         StatisticCollector* statistics;
 	public:
 		explicit ModelVisualizer(QWidget *parent = 0);

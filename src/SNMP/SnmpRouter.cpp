@@ -4,7 +4,7 @@
 
 const long long MAX_32BIT = 4294967296;
 
-SnmpRouter::SnmpRouter(string ip): ip(ip),interface(0),ifInOctets(0),ifOutOctets(0)
+SnmpRouter::SnmpRouter(QString ip): ip(ip.toStdString()),interface(0),ifInOctets(0),ifOutOctets(0)
 {}
 
 std::list<std::string> &split(const std::string &s, char delim, std::list<std::string> &elems)

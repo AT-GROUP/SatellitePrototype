@@ -1,5 +1,5 @@
 #include "RouterPool.h"
-#include <iostream>
+//#include <iostream>
 #include <QtConcurrent/QtConcurrent>
 
 #define INTERVAL 1000
@@ -7,24 +7,11 @@
 void updateRouter(SnmpRouter* router)
 {
     router->update(INTERVAL);
-    cout << "router " << router->getIp() << " : " << router->getBw() << endl;
+    //cout << "router " << router->getIp() << " : " << router->getBw() << endl;
 }
 
-RouterPool::RouterPool(QObject *parent) : QObject(parent)
-{
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateRouters()));
-}
-
-void RouterPool::start()
-{
-    timer->start(INTERVAL);
-}
-
-void RouterPool::stop()
-{
-    timer->stop();
-}
+RouterPool::RouterPool()
+{}
 
 void RouterPool::addRouter(SnmpRouter *router)
 {
@@ -39,12 +26,5 @@ SnmpRouter* RouterPool::getRouter(string ip)
 
 void RouterPool::updateRouters()
 {
-    /*cout << routers.size() << endl;
-    for(auto it = routers.begin(); it != routers.end(); ++it)
-    {
-        cout << (*it)->getIp() << ':' << (*it)->getBw() << endl;
-    }
-    cout.flush();
-    system("sleep 1");*/
     QtConcurrent::map(routers, updateRouter);
 }

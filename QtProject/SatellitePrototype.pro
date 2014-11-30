@@ -4,4 +4,5 @@ SUBDIRS += \
     Wrapper \
     Model \
     Visualizer \
-    Prototype
+    Prototype \
+    SNMP

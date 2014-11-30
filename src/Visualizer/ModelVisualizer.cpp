@@ -15,6 +15,9 @@ ModelVisualizer::ModelVisualizer(QWidget *parent):
     QWidget(parent)
 {
     pModel = new Model();
+    //tmp
+    pWorld = new RealWorld();
+    //tmp
     createWidgets();
     createView();
     createMenu();

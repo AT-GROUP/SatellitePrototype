@@ -37,7 +37,14 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Model/release/ -lMo
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Model/debug/ -lModel
 else:unix: LIBS += -L$$OUT_PWD/../Model/ -lModel
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SNMP/release/ -lSNMP
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SNMP/debug/ -lSNMP
+else:unix: LIBS += -L$$OUT_PWD/../SNMP/ -lSNMP
+
 INCLUDEPATH += $$PWD/../Model
+INCLUDEPATH += $$PWD/../SNMP
+
 DEPENDPATH += $$PWD/../Model
+DEPENDPATH += $$PWD/../SNMP
 
 QMAKE_CXXFLAGS += -std=c++11

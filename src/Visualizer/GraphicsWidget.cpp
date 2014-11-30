@@ -17,6 +17,7 @@ GraphicsWidget::GraphicsWidget(StatisticCollector *sc, Satellite *sat, QWidget *
     addGraph();
     refreshGraphData();
     xAxis->setLabel("Time");
+    xAxis->setTickLabelType(QCPAxis::LabelType::ltDateTime);
     yAxis->setLabel("curBw");
     setMinimumSize(400, 300);
     connect(sc, SIGNAL(dataUpdated()), this, SLOT(updateGraph()));
@@ -31,6 +32,6 @@ void GraphicsWidget::updateGraph()
 void GraphicsWidget::refreshGraphData()
 {
     graph(0)->setData(statisticsData->first, statisticsData->second);
-    xAxis->setRange(0, statisticsData->first.back());
+    xAxis->setRange(statisticsData->first.front(), statisticsData->first.back());
     yAxis->setRange(0, 1.1 * sat->maxBw());
 }

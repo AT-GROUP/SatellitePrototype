@@ -6,21 +6,14 @@
 #include <QObject>
 #include <QTimer>
 
-class RouterPool : QObject
+class RouterPool
 {
-    Q_OBJECT
 private:
     QMap<string, SnmpRouter*> routers;
-    QTimer* timer;
 public:
-    RouterPool(QObject* parent);
+    RouterPool();
     void addRouter(SnmpRouter* router);
     SnmpRouter* getRouter(string ip);
-    void start();
-    void stop();
-signals:
-
-public slots:
     void updateRouters();
 };
 

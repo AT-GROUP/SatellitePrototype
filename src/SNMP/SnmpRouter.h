@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+#include <QString>
 
 using namespace std;
 
@@ -14,7 +15,7 @@ private:
     long long ifInOctets, ifOutOctets;
     long long ifInBw, ifOutBw;
 public:
-    explicit SnmpRouter(string ip);
+    explicit SnmpRouter(QString ip);
     list<string> getInterfaceList();
     void selectInterface(int index);
     long long getBw();
