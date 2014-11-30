@@ -3,25 +3,27 @@
 
 #include <string>
 #include <list>
-#include <QProcess>
 
 using namespace std;
 
 class SnmpRouter
 {
 private:
-    long long ifInOctets, ifOutOctets;
-    long long ifInBw, ifOutBw;
     string ip;
     int interface;
-    int timeDelta;
-
-    void update();
+    long long ifInOctets, ifOutOctets;
+    long long ifInBw, ifOutBw;
 public:
-    SnmpRouter(string ip);
+    explicit SnmpRouter(string ip);
     list<string> getInterfaceList();
     void selectInterface(int index);
     long long getBw();
+    long long getInOctets();
+    long long getOutOctets();
+    long long getInBw();
+    long long getOutBw();
+    void update(int timeDelta);
+    string getIp();
 };
 
 #endif // SNMPROUTER_H

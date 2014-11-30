@@ -9,11 +9,11 @@ TEMPLATE = app
 SOURCES += \
     ../../src/Prototype/ATDynamicIESApp.cpp \
     ../../src/Prototype/main.cpp \
-    ../../src/Prototype/snmprouter.cpp
+    ../../src/Prototype/SnmpRouter.cpp
 
 HEADERS  += \
     ../../src/Prototype/ATDynamicIESApp.h \
-    ../../src/Prototype/snmprouter.h
+    ../../src/Prototype/SnmpRouter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Model/release/ -lModel
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Model/debug/ -lModel
