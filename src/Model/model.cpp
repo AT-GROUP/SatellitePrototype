@@ -1,6 +1,7 @@
 #include "model.h"
 #include <QFile>
 #include <QXmlStreamReader>
+#include <random>
 
 Model::Model(QObject *parent)
 {
@@ -132,7 +133,7 @@ void Model::phase2()
     {
         if ((*it)->groundConnectionAval() > 0) (*it)->decGroundConnectionAval();
                 else (*it)->setBwInUse(0);
-        if ((*it)->status() == "Online") (*it)->setBwNeeded(random()%6 + 1);
+        if ((*it)->status() == "Online") (*it)->setBwNeeded(rand()%6 + 1);
         if ((*it)->status() == "Offline")
         {
             (*it)->setBwNeeded(0);
@@ -142,7 +143,7 @@ void Model::phase2()
         if ((*it)->status() == "StandBy") (*it)->setBwNeeded(512);
         if ((*it)->status() == "Connected") (*it)->setBwNeeded(512);
         (*it)->satellite()->setStationCount((*it)->satellite()->stationCount()+1);
-        if (((*it)->groundConnectionAval() == 0) && ((*it)->failureChance() > random()%100))
+        if (((*it)->groundConnectionAval() == 0) && ((*it)->failureChance() > rand()%100))
             (*it)->setGroundConnectionAval(rand()%4+3);
     }
 }
