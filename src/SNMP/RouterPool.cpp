@@ -19,7 +19,7 @@ void RouterPool::addRouter(SnmpRouter *router)
     routers.insert(router->getIp(), router);
 }
 
-SnmpRouter* RouterPool::getRouter(string ip)
+SnmpRouter* RouterPool::getRouter(QString ip)
 {
     return routers[ip];
 }

@@ -9,11 +9,11 @@
 class RouterPool
 {
 private:
-    QMap<string, SnmpRouter*> routers;
+    QMap<QString, SnmpRouter*> routers;
 public:
     RouterPool();
     void addRouter(SnmpRouter* router);
-    SnmpRouter* getRouter(string ip);
+    SnmpRouter* getRouter(QString ip);
     void updateRouters();
 };
 

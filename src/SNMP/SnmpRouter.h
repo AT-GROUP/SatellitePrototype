@@ -10,12 +10,12 @@ using namespace std;
 class SnmpRouter
 {
 private:
-    string ip;
+    QString ip;
     int interface;
     long long ifInOctets, ifOutOctets;
     long long ifInBw, ifOutBw;
 public:
-    explicit SnmpRouter(QString ip);
+    explicit SnmpRouter(QString &ip);
     list<string> getInterfaceList();
     void selectInterface(int index);
     long long getBw();
@@ -24,7 +24,7 @@ public:
     long long getInBw();
     long long getOutBw();
     void update(int timeDelta);
-    string getIp();
+    QString getIp();
 };
 
 #endif // SNMPROUTER_H

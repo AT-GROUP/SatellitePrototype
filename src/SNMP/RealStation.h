@@ -12,7 +12,7 @@ private:
     QString name;
     RealSatellite* sat;
 public:
-    RealStation(QString name, RealSatellite* sat, QString ip, int interface);
+    RealStation(QString name, RealSatellite* sat, SnmpRouter* router);
     int inBwInUse();
     int outBwInUse();
     //int bwInUse();

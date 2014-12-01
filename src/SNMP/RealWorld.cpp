@@ -8,8 +8,8 @@ RealWorld::RealWorld()
 {
     rp = new RouterPool();
     timer = new QTimer(this);
-    satellites = new QVector<RealSatellite*>();
-    stations = new QVector<RealStation*>();
+    satellites = vector<RealSatellite*>();
+    stations = vector<RealStation*>();
     loadInitData();
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 }
@@ -27,11 +27,11 @@ void RealWorld::stop()
 void RealWorld::update()
 {
     rp->updateRouters();
-    for(RealSatellite* sat : *satellites)
+    for(RealSatellite* sat : satellites)
     {
         sat->setCurInBw(0);
     }
-    for(RealStation* station : *stations)
+    for(RealStation* station : stations)
     {
         station->getSatellite()->incCurInBw(station->outBwInUse());
         station->getSatellite()->incCurOutBw(station->inBwInUse());
@@ -40,7 +40,7 @@ void RealWorld::update()
 
 void RealWorld::loadInitData()
 {
-    QFile* pFile = new QFile("init.xml");
+    QFile* pFile = new QFile("init2.xml");
     if (!pFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {
         return;
@@ -55,11 +55,14 @@ void RealWorld::loadInitData()
         {
             QXmlStreamAttributes attrs = xml.attributes();
             if (xml.name() == "satellite")
-                satellites->append(new RealSatellite(attrs.value("name").toString(), attrs.value("maxBw").toInt(), attrs.value("maxBw").toInt()));
+                satellites.push_back(new RealSatellite(attrs.value("name").toString(), attrs.value("maxBw").toInt(), attrs.value("maxBw").toInt()));
             if (xml.name() == "station")
             {
-                stations->append(new RealStation(attrs.value(("name")).toString(), satellites->last(), QString("192.168.1.1"), 1));
-                rp->addRouter(stations->last()->getRouter());
+                QString s = attrs.value("ip").toString();
+                SnmpRouter* r = new SnmpRouter(s);
+                r->selectInterface(0);
+                rp->addRouter(r);
+                stations.push_back(new RealStation(attrs.value(("name")).toString(), satellites.back(), r));
             }
         }
     }

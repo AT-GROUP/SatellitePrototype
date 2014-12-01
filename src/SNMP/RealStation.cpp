@@ -1,9 +1,7 @@
 #include "RealStation.h"
 
-RealStation::RealStation(QString name, RealSatellite *sat, QString ip, int interface = 1) : name(name), sat(sat)
+RealStation::RealStation(QString name, RealSatellite *sat, SnmpRouter *router) : router(router), name(name), sat(sat)
 {
-    router = new SnmpRouter(ip);
-    router->selectInterface(interface);
 }
 
 int RealStation::inBwInUse()
