@@ -9,7 +9,8 @@ StationDataTable::StationDataTable(StatisticCollector* sc, Satellite *sat, Model
     this->sat = sat;
     this->mod = mod;
     setColumnCount(6);
-    QStringList captions = {"Name", "IpAddress", "BwNeeded", "BwInUse", "Status", "Ground"};
+    QStringList captions;
+    captions << "Name" << "IpAddress" << "BwNeeded" << "BwInUse" << "Status" << "Ground";
     setHorizontalHeaderLabels(captions);
     resizeColumnsToContents();
     //horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
