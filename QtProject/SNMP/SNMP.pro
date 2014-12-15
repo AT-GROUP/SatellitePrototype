@@ -17,14 +17,16 @@ SOURCES += \
     ../../src/SNMP/SnmpRouter.cpp \
     ../../src/SNMP/RealWorld.cpp \
     ../../src/SNMP/RealStation.cpp \
-    ../../src/SNMP/RealSatellite.cpp
+    ../../src/SNMP/RealSatellite.cpp \
+    ../../src/SNMP/RealStatisticCollector.cpp
 
 HEADERS += \
     ../../src/SNMP/RouterPool.h \
     ../../src/SNMP/SnmpRouter.h \
     ../../src/SNMP/RealWorld.h \
     ../../src/SNMP/RealStation.h \
-    ../../src/SNMP/RealSatellite.h
+    ../../src/SNMP/RealSatellite.h \
+    ../../src/SNMP/RealStatisticCollector.h
 
 unix {
     target.path = /usr/lib

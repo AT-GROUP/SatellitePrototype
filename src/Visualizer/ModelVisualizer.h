@@ -13,6 +13,7 @@
 #include <qmenubar.h>
 #include "../../src/Model/model.h"
 #include "../SNMP/RealWorld.h"
+#include "../SNMP/RealStatisticCollector.h"
 
 class ModelVisualizer : public QWidget
 {
@@ -27,6 +28,7 @@ class ModelVisualizer : public QWidget
         Model *pModel;
         RealWorld *pWorld;
         StatisticCollector* statistics;
+        RealStatisticCollector* realStatistics;
 	public:
 		explicit ModelVisualizer(QWidget *parent = 0);
 		~ModelVisualizer();

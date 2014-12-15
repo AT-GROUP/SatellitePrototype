@@ -10,8 +10,8 @@ RealWorld::RealWorld()
 {
     rp = new RouterPool();
     timer = new QTimer(this);
-    satellites = vector<RealSatellite*>();
-    stations = vector<RealStation*>();
+    satellites = QVector<RealSatellite*>();
+    stations = QVector<RealStation*>();
     loadInitData();
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
 }
@@ -72,4 +72,9 @@ void RealWorld::loadInitData()
     }
     pFile->close();
     delete pFile;
+}
+
+QVector<RealSatellite*>* RealWorld::satellitesList()
+{
+    return &satellites;
 }

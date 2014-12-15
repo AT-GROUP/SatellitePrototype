@@ -18,6 +18,7 @@ public:
     int curOutBw();
     int maxInBw();
     int maxOutBw();
+    int curBw();
     QString name();
 
     void setCurInBw(int val);

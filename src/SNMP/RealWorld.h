@@ -5,6 +5,7 @@
 #include "RealStation.h"
 #include "RealSatellite.h"
 #include <vector>
+#include <QVector>
 
 class RealWorld : public QObject
 {
@@ -12,13 +13,15 @@ class RealWorld : public QObject
 private:
     QTimer* timer;
     RouterPool* rp;
-    vector<RealSatellite*> satellites;
-    vector<RealStation*> stations;
+    QVector<RealSatellite*> satellites;
+    QVector<RealStation*> stations;
     void loadInitData();
 public:
     RealWorld();
     void start();
     void stop();
+
+    QVector<RealSatellite*>* satellitesList();
 public slots:
     void update();
 signals:

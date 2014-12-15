@@ -1,4 +1,5 @@
 #include "RealSatellite.h"
+#include <cmath>
 
 RealSatellite::RealSatellite(QString name, int maxInBw, int maxOutBw) : _name(name), _maxInBw(maxInBw), _maxOutBw(maxOutBw), _curInBw(0), _curOutBw(0)
 {}
@@ -16,6 +17,11 @@ int RealSatellite::curInBw()
 int RealSatellite::curOutBw()
 {
     return _curOutBw;
+}
+
+int RealSatellite::curBw()
+{
+    return std::max(_curInBw, _curOutBw);
 }
 
 int RealSatellite::maxInBw()
@@ -47,3 +53,4 @@ void RealSatellite::incCurOutBw(int val)
 {
     _curOutBw += val;
 }
+

@@ -114,6 +114,10 @@ void ModelVisualizer::initStatistics()
     QVector<Satellite*>* sats = pModel->satelliteList();
     statistics = new StatisticCollector(sats, 0);
     statistics->start();
+
+    QVector<RealSatellite*>* realSats = pWorld->satellitesList();
+    realStatistics = new RealStatisticCollector(realSats, 0);
+    realStatistics->start();
 }
 
 void ModelVisualizer::addMessageToEventsList(const QString& message)
