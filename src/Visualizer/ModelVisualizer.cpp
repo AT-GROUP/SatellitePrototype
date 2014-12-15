@@ -17,6 +17,7 @@ ModelVisualizer::ModelVisualizer(QWidget *parent):
     pModel = new Model();
     //tmp
     pWorld = new RealWorld();
+    pWorld->start();
     //tmp
     createWidgets();
     createView();
@@ -34,6 +35,7 @@ ModelVisualizer::~ModelVisualizer()
     delete pEventList;
     delete pModel;
     delete pMainMenu;
+    delete pWorld;
 }
 
 void ModelVisualizer::createWidgets()

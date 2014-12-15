@@ -6,7 +6,7 @@
 class RealSatellite
 {
 private:
-    QString name;
+    QString _name;
     int _maxInBw;
     int _maxOutBw;
 
@@ -18,6 +18,7 @@ public:
     int curOutBw();
     int maxInBw();
     int maxOutBw();
+    QString name();
 
     void setCurInBw(int val);
     void setCurOutBw(int val);

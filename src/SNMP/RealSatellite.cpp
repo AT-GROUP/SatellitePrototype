@@ -1,7 +1,12 @@
 #include "RealSatellite.h"
 
-RealSatellite::RealSatellite(QString name, int maxInBw, int maxOutBw) : name(name), _maxInBw(maxInBw), _maxOutBw(maxOutBw), _curInBw(0), _curOutBw(0)
+RealSatellite::RealSatellite(QString name, int maxInBw, int maxOutBw) : _name(name), _maxInBw(maxInBw), _maxOutBw(maxOutBw), _curInBw(0), _curOutBw(0)
 {}
+
+QString RealSatellite::name()
+{
+    return _name;
+}
 
 int RealSatellite::curInBw()
 {

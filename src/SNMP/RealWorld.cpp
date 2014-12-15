@@ -1,6 +1,8 @@
 #include "RealWorld.h"
 #include <QXmlStreamReader>
 #include <QFile>
+#include <QDebug>
+#include <iostream>
 
 #define INTERVAL 1000
 
@@ -36,6 +38,8 @@ void RealWorld::update()
         station->getSatellite()->incCurInBw(station->outBwInUse());
         station->getSatellite()->incCurOutBw(station->inBwInUse());
     }
+    qDebug() << "Satellite " << satellites.front()->name() << " : " << satellites.front()->curInBw() << ", " << satellites.front()->curOutBw();
+    qDebug() << "Satellite " << satellites.back()->name() << " : " << satellites.back()->curInBw() << ", " << satellites.back()->curOutBw();
 }
 
 void RealWorld::loadInitData()
