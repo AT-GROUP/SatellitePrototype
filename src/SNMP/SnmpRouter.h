@@ -11,7 +11,7 @@ class SnmpRouter
 {
 private:
     QString ip;
-    int _interface;
+    int interface;
     long long ifInOctets, ifOutOctets;
     long long ifInBw, ifOutBw;
 public:

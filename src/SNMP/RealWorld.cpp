@@ -32,6 +32,7 @@ void RealWorld::update()
     for(RealSatellite* sat : satellites)
     {
         sat->setCurInBw(0);
+        sat->setCurOutBw(0);
     }
     for(RealStation* station : stations)
     {
@@ -64,7 +65,8 @@ void RealWorld::loadInitData()
             {
                 QString s = attrs.value("ip").toString();
                 SnmpRouter* r = new SnmpRouter(s);
-                r->selectInterface(0);
+                QString interface = attrs.value("interface").toString();
+                r->selectInterface(interface.toInt());
                 rp->addRouter(r);
                 stations.push_back(new RealStation(attrs.value(("name")).toString(), satellites.back(), r));
             }

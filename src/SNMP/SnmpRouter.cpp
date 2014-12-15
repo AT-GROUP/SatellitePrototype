@@ -1,10 +1,11 @@
 #include "SnmpRouter.h"
 #include <sstream>
 #include <QProcess>
+#include <QDebug>
 
 const long long MAX_32BIT = 4294967296;
 
-SnmpRouter::SnmpRouter(QString& ip): ip(ip),interface(0),ifInOctets(0),ifOutOctets(0)
+SnmpRouter::SnmpRouter(QString& ip): ip(ip),interface(0),ifInOctets(-1),ifOutOctets(-1),ifInBw(0),ifOutBw(0)
 {}
 
 std::list<std::string> &split(const std::string &s, char delim, std::list<std::string> &elems)
@@ -36,7 +37,7 @@ list<string> SnmpRouter::getInterfaceList()
     QString snmpProgram = "snmpwalk";
     QStringList params;
     params << "-c" <<  "public" <<
-           "-v" << "2c" << "81.200.86.82" <<
+           "-v" << "2c" << ip <<
            ".1.3.6.1.2.1.2.2.1.2";
     QProcess* snmp = new QProcess();
     snmp->start(snmpProgram, params);
@@ -53,7 +54,7 @@ list<string> SnmpRouter::getInterfaceList()
 
 void SnmpRouter::selectInterface(int index)
 {
-    interface = index + 1;
+    interface = index;
 }
 
 void SnmpRouter::update(int timeDelta)
@@ -63,7 +64,7 @@ void SnmpRouter::update(int timeDelta)
     QString ifOctetsMIBforInterface = ".1.3.6.1.2.1.2.2.1.10." +
             QString::number(interface);
     params << "-c" <<  "public" <<
-           "-v" << "2c" << "81.200.86.82" <<
+           "-v" << "2c" << ip <<
            ifOctetsMIBforInterface;
     QProcess* snmp = new QProcess();
     snmp->start(snmpProgram, params);
@@ -71,31 +72,33 @@ void SnmpRouter::update(int timeDelta)
     char buf[256];
     snmp->readLine(buf, sizeof(buf));
     long long ifInOctets = atoll(split(string(buf), ' ').back().c_str());
-    if(this->ifInOctets == 0)
+    if(this->ifInOctets == -1)
         this->ifInOctets = ifInOctets;
     if(ifInOctets < this->ifInOctets)
         this->ifInOctets -= MAX_32BIT;
     ifInBw = (ifInOctets - this->ifInOctets)*1000 / timeDelta;
     this->ifInOctets = ifInOctets;
+    qDebug() << snmpProgram << " " << params << " ====> " << this->ifInOctets;
     delete snmp;
 
     ifOctetsMIBforInterface = ".1.3.6.1.2.1.2.2.1.16." +
             QString::number(interface);
     params.clear();
     params << "-c" <<  "public" <<
-           "-v" << "2c" << "81.200.86.82" <<
+           "-v" << "2c" << ip <<
            ifOctetsMIBforInterface;
     snmp = new QProcess();
     snmp->start(snmpProgram, params);
     snmp->waitForFinished();
     snmp->readLine(buf, sizeof(buf));
     long long ifOutOctets = atoll(split(string(buf), ' ').back().c_str());
-    if(this->ifOutOctets == 0)
+    if(this->ifOutOctets == -1)
         this->ifOutOctets = ifOutOctets;
     if(ifOutOctets < this->ifOutOctets)
         this->ifOutOctets -= MAX_32BIT;
     ifOutBw = (ifOutOctets - this->ifOutOctets)*1000 / timeDelta;
     this->ifOutOctets = ifOutOctets;
+    qDebug() << snmpProgram << " " << params << " ====> " << this->ifOutOctets;
     delete snmp;
 }
 
@@ -111,12 +114,12 @@ long long SnmpRouter::getOutOctets()
 
 long long SnmpRouter::getInBw()
 {
-    return ifInBw;
+    return ifInBw / 1024;
 }
 
 long long SnmpRouter::getOutBw()
 {
-    return ifOutBw;
+    return ifOutBw / 1024;
 }
 
 long long SnmpRouter::getBw()
