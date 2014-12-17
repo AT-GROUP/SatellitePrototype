@@ -79,6 +79,9 @@ void ModelVisualizer::createMenu()
     showInfo = new QAction("Show information", this);
     connect(showInfo, SIGNAL(triggered()), this, SLOT(showGraphsWindow()));
     pMainMenu->addAction(showInfo);
+    showRealGraph = new QAction("Show real information", this);
+    connect(showRealGraph, SIGNAL(triggered()), this, SLOT(showRealGraphsWindow()));
+    pMainMenu->addAction(showRealGraph);
     connect(mSigmapper, SIGNAL(mapped(QString)), this, SLOT(addMessageToEventsList(const QString&)));
 
     connect(pModel, SIGNAL(showRecomendation(const QString&)), this, SLOT(showMessageWindow(const QString&)));
@@ -115,7 +118,7 @@ void ModelVisualizer::initStatistics()
     statistics = new StatisticCollector(sats, 0);
     statistics->start();
 
-    QVector<RealSatellite*>* realSats = pWorld->satellitesList();
+    QVector<RealSatellite*>* realSats = pWorld->satelliteList();
     realStatistics = new RealStatisticCollector(realSats, 0);
     realStatistics->start();
 }
@@ -162,6 +165,12 @@ void ModelVisualizer::mapZoom(qreal factor, QPointF centerPoint)
 void ModelVisualizer::showGraphsWindow()
 {
     GraphDialog* gd = new GraphDialog(pModel, statistics, this);
+    gd->show();
+}
+
+void ModelVisualizer::showRealGraphsWindow()
+{
+    RealGraphDialog* gd = new RealGraphDialog(pWorld, realStatistics, this);
     gd->show();
 }
 

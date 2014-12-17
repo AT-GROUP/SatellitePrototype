@@ -143,5 +143,5 @@ long long SnmpRouter::getOutBw()
 
 long long SnmpRouter::getBw()
 {
-    return ifInBw + ifOutBw; //temp
+    return std::max(ifInBw, ifOutBw); //temp
 }

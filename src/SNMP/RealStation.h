@@ -9,15 +9,18 @@ class RealStation
 {
 private:
     SnmpRouter* router;
-    QString name;
+    QString _name;
     RealSatellite* sat;
 public:
-    RealStation(QString name, RealSatellite* sat, SnmpRouter* router);
+    RealStation(QString _name, RealSatellite* sat, SnmpRouter* router);
     int inBwInUse();
     int outBwInUse();
-    //int bwInUse();
+    int bwInUse();
     SnmpRouter* getRouter();
-    RealSatellite* getSatellite();
+    RealSatellite* satellite();
+    QString name();
+    QString ipAddress();
+
 };
 
 #endif // REALSTATION_H

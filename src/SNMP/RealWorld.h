@@ -21,7 +21,8 @@ public:
     void start();
     void stop();
 
-    QVector<RealSatellite*>* satellitesList();
+    QVector<RealSatellite*>* satelliteList();
+    QVector<RealStation*>* stationList();
 public slots:
     void update();
 signals:

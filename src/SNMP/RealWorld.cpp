@@ -36,8 +36,8 @@ void RealWorld::update()
     }
     for(RealStation* station : stations)
     {
-        station->getSatellite()->incCurInBw(station->outBwInUse());
-        station->getSatellite()->incCurOutBw(station->inBwInUse());
+        station->satellite()->incCurInBw(station->outBwInUse());
+        station->satellite()->incCurOutBw(station->inBwInUse());
     }
     qDebug() << "Satellite " << satellites.front()->name() << " : " << satellites.front()->curInBw() << ", " << satellites.front()->curOutBw();
     qDebug() << "Satellite " << satellites.back()->name() << " : " << satellites.back()->curInBw() << ", " << satellites.back()->curOutBw();
@@ -76,7 +76,12 @@ void RealWorld::loadInitData()
     delete pFile;
 }
 
-QVector<RealSatellite*>* RealWorld::satellitesList()
+QVector<RealSatellite*>* RealWorld::satelliteList()
 {
     return &satellites;
+}
+
+QVector<RealStation*>* RealWorld::stationList()
+{
+    return &stations;
 }

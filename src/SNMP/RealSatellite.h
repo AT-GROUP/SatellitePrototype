@@ -18,6 +18,7 @@ public:
     int curOutBw();
     int maxInBw();
     int maxOutBw();
+    int maxBw();
     int curBw();
     QString name();
 

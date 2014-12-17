@@ -34,6 +34,11 @@ int RealSatellite::maxOutBw()
     return _maxOutBw;
 }
 
+int RealSatellite::maxBw()
+{
+    return std::max(_maxInBw, _maxOutBw);
+}
+
 void RealSatellite::setCurInBw(int val)
 {
     _curInBw = val;
