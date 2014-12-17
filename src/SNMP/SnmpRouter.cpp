@@ -5,7 +5,7 @@
 
 const long long MAX_32BIT = 4294967296;
 
-SnmpRouter::SnmpRouter(QString& ip): ip(ip),interface(0),ifInOctets(-1),ifOutOctets(-1),ifInBw(0),ifOutBw(0)
+SnmpRouter::SnmpRouter(QString& ip): ip(ip),_interface(0),ifInOctets(-1),ifOutOctets(-1),ifInBw(0),ifOutBw(0)
 {}
 
 std::list<std::string> &split(const std::string &s, char delim, std::list<std::string> &elems)
@@ -54,7 +54,7 @@ list<string> SnmpRouter::getInterfaceList()
 
 void SnmpRouter::selectInterface(int index)
 {
-    interface = index;
+    _interface = index;
 }
 
 void SnmpRouter::update(int timeDelta)
@@ -62,7 +62,7 @@ void SnmpRouter::update(int timeDelta)
     QString snmpProgram = "snmpget";
     QStringList params;
     QString ifOctetsMIBforInterface = ".1.3.6.1.2.1.2.2.1.10." +
-            QString::number(interface);
+            QString::number(_interface);
     params << "-c" <<  "public" <<
            "-v" << "2c" << ip <<
            ifOctetsMIBforInterface;
@@ -82,7 +82,7 @@ void SnmpRouter::update(int timeDelta)
     delete snmp;
 
     ifOctetsMIBforInterface = ".1.3.6.1.2.1.2.2.1.16." +
-            QString::number(interface);
+            QString::number(_interface);
     params.clear();
     params << "-c" <<  "public" <<
            "-v" << "2c" << ip <<
