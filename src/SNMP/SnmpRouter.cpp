@@ -43,6 +43,12 @@ list<string> SnmpRouter::getInterfaceList()
     snmp->start(snmpProgram, params);
     snmp->waitForFinished();
     char buf[256];
+    if(snmp->exitCode())
+    {
+        qDebug() << "Error";
+        qDebug() << snmp->readAllStandardError();
+        return list<string>();
+    }
     while(snmp->canReadLine())
     {
         snmp->readLine(buf, sizeof(buf));
@@ -67,9 +73,16 @@ void SnmpRouter::update(int timeDelta)
            "-v" << "2c" << ip <<
            ifOctetsMIBforInterface;
     QProcess* snmp = new QProcess();
+
     snmp->start(snmpProgram, params);
     snmp->waitForFinished();
     char buf[256];
+    if(snmp->exitCode())
+    {
+        qDebug() << "Error";
+        qDebug() << snmp->readAllStandardError();
+        return;
+    }
     snmp->readLine(buf, sizeof(buf));
     long long ifInOctets = atoll(split(string(buf), ' ').back().c_str());
     if(this->ifInOctets == -1)
@@ -78,7 +91,7 @@ void SnmpRouter::update(int timeDelta)
         this->ifInOctets -= MAX_32BIT;
     ifInBw = (ifInOctets - this->ifInOctets)*1000 / timeDelta;
     this->ifInOctets = ifInOctets;
-    qDebug() << snmpProgram << " " << params << " ====> " << this->ifInOctets;
+    //qDebug() << snmpProgram << " " << params << " ====> " << this->ifInOctets;
     delete snmp;
 
     ifOctetsMIBforInterface = ".1.3.6.1.2.1.2.2.1.16." +
@@ -90,6 +103,12 @@ void SnmpRouter::update(int timeDelta)
     snmp = new QProcess();
     snmp->start(snmpProgram, params);
     snmp->waitForFinished();
+    if(snmp->exitCode())
+    {
+        qDebug() << "Error";
+        qDebug() << snmp->readAllStandardError();
+        return;
+    }
     snmp->readLine(buf, sizeof(buf));
     long long ifOutOctets = atoll(split(string(buf), ' ').back().c_str());
     if(this->ifOutOctets == -1)
@@ -98,7 +117,7 @@ void SnmpRouter::update(int timeDelta)
         this->ifOutOctets -= MAX_32BIT;
     ifOutBw = (ifOutOctets - this->ifOutOctets)*1000 / timeDelta;
     this->ifOutOctets = ifOutOctets;
-    qDebug() << snmpProgram << " " << params << " ====> " << this->ifOutOctets;
+    //qDebug() << snmpProgram << " " << params << " ====> " << this->ifOutOctets;
     delete snmp;
 }
 
