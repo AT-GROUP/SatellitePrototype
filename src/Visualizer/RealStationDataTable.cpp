@@ -8,7 +8,7 @@ RealStationDataTable::RealStationDataTable(RealStatisticCollector* sc, RealSatel
 {
     this->sat = sat;
     this->mod = mod;
-    setColumnCount(6);
+    setColumnCount(3);
     QStringList captions;
     captions << "Name" << "IpAddress" << "BwInUse";
     setHorizontalHeaderLabels(captions);
