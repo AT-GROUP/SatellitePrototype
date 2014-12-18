@@ -133,15 +133,15 @@ long long SnmpRouter::getOutOctets()
 
 long long SnmpRouter::getInBw()
 {
-    return ifInBw / 1024;
+    return ifInBw * 8 / 1024;
 }
 
 long long SnmpRouter::getOutBw()
 {
-    return ifOutBw / 1024;
+    return ifOutBw * 8 / 1024;
 }
 
 long long SnmpRouter::getBw()
 {
-    return std::max(ifInBw, ifOutBw); //temp
+    return std::max(ifInBw, ifOutBw) * 8 / 1024; //kbit / s
 }
