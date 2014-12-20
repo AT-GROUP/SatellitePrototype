@@ -1,5 +1,6 @@
 #include "RealStatisticCollector.h"
 #include <ctime>
+#include <QtConcurrent>
 
 #define INTERVAL 1000
 
@@ -36,7 +37,7 @@ Data* RealStatisticCollector::getData(RealSatellite* sat)
 
 void RealStatisticCollector::start()
 {
-    timer->start(100);
+    timer->start(INTERVAL);
 }
 
 void RealStatisticCollector::pause()

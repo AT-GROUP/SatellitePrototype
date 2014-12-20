@@ -5,6 +5,8 @@
 #include <list>
 #include <QString>
 
+class RouterPool;
+
 using namespace std;
 
 class SnmpRouter
@@ -14,8 +16,9 @@ private:
     int _interface;
     long long ifInOctets, ifOutOctets;
     long long ifInBw, ifOutBw;
+    RouterPool* rp;
 public:
-    explicit SnmpRouter(QString &ip);
+    explicit SnmpRouter(QString &ip, RouterPool* rp);
     list<string> getInterfaceList();
     void selectInterface(int index);
     long long getBw();
@@ -23,7 +26,7 @@ public:
     long long getOutOctets();
     long long getInBw();
     long long getOutBw();
-    void update(int timeDelta);
+    void update();
     QString getIp();
 };
 

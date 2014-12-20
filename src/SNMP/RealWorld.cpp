@@ -4,8 +4,6 @@
 #include <QDebug>
 #include <iostream>
 
-#define INTERVAL 1000
-
 RealWorld::RealWorld()
 {
     rp = new RouterPool();
@@ -18,7 +16,7 @@ RealWorld::RealWorld()
 
 void RealWorld::start()
 {
-    timer->start(INTERVAL);
+    timer->start(rp->getInterval());
 }
 
 void RealWorld::stop()
@@ -39,8 +37,8 @@ void RealWorld::update()
         station->satellite()->incCurInBw(station->outBwInUse());
         station->satellite()->incCurOutBw(station->inBwInUse());
     }
-    qDebug() << "Satellite " << satellites.front()->name() << " : " << satellites.front()->curInBw() << ", " << satellites.front()->curOutBw();
-    qDebug() << "Satellite " << satellites.back()->name() << " : " << satellites.back()->curInBw() << ", " << satellites.back()->curOutBw();
+    //qDebug() << "Satellite " << satellites.front()->name() << " : " << satellites.front()->curInBw() << ", " << satellites.front()->curOutBw();
+    //qDebug() << "Satellite " << satellites.back()->name() << " : " << satellites.back()->curInBw() << ", " << satellites.back()->curOutBw();
 }
 
 void RealWorld::loadInitData()
@@ -63,12 +61,16 @@ void RealWorld::loadInitData()
                 satellites.push_back(new RealSatellite(attrs.value("name").toString(), attrs.value("maxBw").toInt(), attrs.value("maxBw").toInt()));
             if (xml.name() == "station")
             {
-                QString s = attrs.value("ip").toString();
-                SnmpRouter* r = new SnmpRouter(s);
+                QString ip = attrs.value("ip").toString();
+                rp->addRouter(ip);
+                SnmpRouter* r = rp->getRouter(ip);
                 QString interface = attrs.value("interface").toString();
                 r->selectInterface(interface.toInt());
-                rp->addRouter(r);
-                stations.push_back(new RealStation(attrs.value(("name")).toString(), satellites.back(), r));
+                stations.push_back(new RealStation(attrs.value("name").toString(), satellites.back(), r));
+            }
+            if (xml.name() == "interval")
+            {
+                rp->setInterval(attrs.value("value").toInt());
             }
         }
     }

@@ -1,11 +1,11 @@
-#include "SnmpRouter.h"
+#include "RouterPool.h"
 #include <sstream>
 #include <QProcess>
 #include <QDebug>
 
 const long long MAX_32BIT = 4294967296;
 
-SnmpRouter::SnmpRouter(QString& ip): ip(ip),_interface(0),ifInOctets(-1),ifOutOctets(-1),ifInBw(0),ifOutBw(0)
+SnmpRouter::SnmpRouter(QString& ip, RouterPool *rp): ip(ip),_interface(0),ifInOctets(-1),ifOutOctets(-1),ifInBw(0),ifOutBw(0),rp(rp)
 {}
 
 std::list<std::string> &split(const std::string &s, char delim, std::list<std::string> &elems)
@@ -63,8 +63,9 @@ void SnmpRouter::selectInterface(int index)
     _interface = index;
 }
 
-void SnmpRouter::update(int timeDelta)
+void SnmpRouter::update()
 {
+    int timeDelta = rp->getInterval();
     QString snmpProgram = "snmpget";
     QStringList params;
     QString ifOctetsMIBforInterface = ".1.3.6.1.2.1.2.2.1.10." +

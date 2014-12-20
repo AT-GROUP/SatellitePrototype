@@ -2,21 +2,29 @@
 //#include <iostream>
 #include <QtConcurrent/QtConcurrent>
 
-#define INTERVAL 1000
-
 void updateRouter(SnmpRouter* router)
 {
-    router->update(INTERVAL);
+    router->update();
     //cout << "router " << router->getIp() << " : " << router->getBw() << endl;
 }
 
-RouterPool::RouterPool()
+RouterPool::RouterPool() : interval(1000)
 {}
 
-void RouterPool::addRouter(SnmpRouter *router)
+void RouterPool::setInterval(int interval)
+{
+    this->interval = interval;
+}
+
+int RouterPool::getInterval()
+{
+    return interval;
+}
+
+void RouterPool::addRouter(QString ip)
 {
     //cout << "Adding router " << router->getIp() << endl;
-    routers.insert(router->getIp(), router);
+    routers.insert(ip, new SnmpRouter(ip, this));
 }
 
 SnmpRouter* RouterPool::getRouter(QString ip)

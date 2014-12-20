@@ -10,9 +10,12 @@ class RouterPool
 {
 private:
     QMap<QString, SnmpRouter*> routers;
+    int interval;
 public:
     RouterPool();
-    void addRouter(SnmpRouter* router);
+    void setInterval(int interval);
+    int getInterval();
+    void addRouter(QString ip);
     SnmpRouter* getRouter(QString ip);
     void updateRouters();
 };
