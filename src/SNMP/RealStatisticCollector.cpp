@@ -1,9 +1,10 @@
-#include "StatisticCollector.h"
-//#include <cstdio>
+#include "RealStatisticCollector.h"
 #include <ctime>
+#include <QtConcurrent>
+
 #define INTERVAL 1000
 
-StatisticCollector::StatisticCollector(QVector<Satellite *> *satellites, Time t = 0) : QObject()
+RealStatisticCollector::RealStatisticCollector(QVector<RealSatellite *> *satellites, Time t = 0) : QObject()
 {
     timer = new QTimer(this);
     time = t;
@@ -14,7 +15,7 @@ StatisticCollector::StatisticCollector(QVector<Satellite *> *satellites, Time t 
     connect(timer, SIGNAL(timeout()), this, SLOT(fetchData()));
 }
 
-void StatisticCollector::addData(Satellite* sat, Time t)
+void RealStatisticCollector::addData(RealSatellite* sat, Time t)
 {
     if (statistics.find(sat) != statistics.end())
         if (statistics[sat].first.size() >= 2)
@@ -29,22 +30,22 @@ void StatisticCollector::addData(Satellite* sat, Time t)
     emit(dataUpdated());
 }
 
-Data* StatisticCollector::getData(Satellite* sat)
+Data* RealStatisticCollector::getData(RealSatellite* sat)
 {
     return &statistics[sat];
 }
 
-void StatisticCollector::start()
+void RealStatisticCollector::start()
 {
-    timer->start(100);
+    timer->start(INTERVAL);
 }
 
-void StatisticCollector::pause()
+void RealStatisticCollector::pause()
 {
     timer->stop();
 }
 
-void StatisticCollector::fetchData()
+void RealStatisticCollector::fetchData()
 {
     time += (double)INTERVAL / 1000;
     for(auto sat = statistics.begin(); sat != statistics.end(); ++sat)

@@ -26,9 +26,7 @@ int InfoTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant InfoTableModel::data(const QModelIndex &index, int role = Qt::DisplayRole) const
 {
-    //if (index.row() > pDataStorage->lastKey())
     if (index.row() > (pDataStorage->begin() + (pDataStorage->size() - 1)).key())
-        return QVariant();
     if (role == Qt::DisplayRole)
     {
         QPair<QString, QString> pair = pDataStorage->values().at(index.row());
@@ -48,7 +46,7 @@ void InfoTableModel::updateData(std::tuple<int, QString, QString> incomingData)
     beginRemoveRows(QModelIndex(), row, row);
     endRemoveRows();
     beginInsertRows(QModelIndex(), row, row);
-    pDataStorage->insert(row,QPair<QString,QString>(data0,data1));
+    pDataStorage->insert(row,StrPair(data0,data1));
     endInsertRows();
 }
 

@@ -27,7 +27,7 @@ class QStationItem: public QObject, public QGraphicsItemGroup
 	signals:
 		void valueChanged(const QString& mess);
     public slots:
-        void updateFact(const QPair<QString, QString>& info);
+        void updateFact(const StrPair &info);
 };
 
 #endif // QSTATIONITEM_H

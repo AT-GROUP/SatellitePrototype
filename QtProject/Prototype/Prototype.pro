@@ -34,5 +34,12 @@ else:unix: LIBS += -L$$OUT_PWD/../Wrapper/ -lWrapper
 INCLUDEPATH += $$PWD/../Wrapper
 DEPENDPATH += $$PWD/../Wrapper
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SNMP/release/ -lSNMP
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SNMP/debug/ -lSNMP
+else:unix: LIBS += -L$$OUT_PWD/../SNMP/ -lSNMP
+
+INCLUDEPATH += $$PWD/../SNMP
+DEPENDPATH += $$PWD/../SNMP
+
 QMAKE_CXXFLAGS += -std=c++11
 

@@ -10,11 +10,17 @@
 #include "GraphDialog.h"
 #include "../../src/Model/satellite.h"
 #include <QMessageBox>
+#include <QtConcurrent/QtConcurrent>
 
 ModelVisualizer::ModelVisualizer(QWidget *parent):
     QWidget(parent)
 {
     pModel = new Model();
+    //tmp
+    pWorld = new RealWorld();
+    pWorld->start();
+    //tmp
+    messages = new MessageList();
     createWidgets();
     createView();
     createMenu();
@@ -31,13 +37,16 @@ ModelVisualizer::~ModelVisualizer()
     delete pEventList;
     delete pModel;
     delete pMainMenu;
+    delete pWorld;
 }
 
 void ModelVisualizer::createWidgets()
 {
     pScene = new QGraphicsScene();
-    pEventList = new QListWidget();
+    pEventList = new QListView();
+    pEventList->setModel(messages);
     pEventList->setFixedWidth(200);
+    pEventList->setUniformItemSizes(true);
     pEventList->autoScrollMargin();
     pBackGroundPic = new QGraphicsPixmapItem(QPixmap(":background"));
     pScene->addItem(pBackGroundPic);
@@ -58,12 +67,12 @@ void ModelVisualizer::createMenu()
     pMainMenu = new QMenuBar();
     startSim = new QAction("Continue simulation", this);
     startSim->setData(QString("Simulation continued"));
-    connect(startSim, SIGNAL(triggered()), mSigmapper, SLOT(map()));
+    connect(startSim, SIGNAL(triggered()), mSigmapper, SLOT(map()), Qt::QueuedConnection);
     pMainMenu->addAction(startSim);
     mSigmapper->setMapping(startSim, startSim->data().toString());
     pauseSim = new QAction("Pause simulation", this);
     pauseSim->setData(QString("Simulation paused"));
-    connect(pauseSim, SIGNAL(triggered()), mSigmapper, SLOT(map()));
+    connect(pauseSim, SIGNAL(triggered()), mSigmapper, SLOT(map()), Qt::QueuedConnection);
     mSigmapper->setMapping(pauseSim, pauseSim->data().toString());
     pMainMenu->addAction(pauseSim);
     configure = new QAction("Configure model", this);
@@ -74,9 +83,12 @@ void ModelVisualizer::createMenu()
     showInfo = new QAction("Show information", this);
     connect(showInfo, SIGNAL(triggered()), this, SLOT(showGraphsWindow()));
     pMainMenu->addAction(showInfo);
-    connect(mSigmapper, SIGNAL(mapped(QString)), this, SLOT(addMessageToEventsList(const QString&)));
+    showRealGraph = new QAction("Show real information", this);
+    connect(showRealGraph, SIGNAL(triggered()), this, SLOT(showRealGraphsWindow()));
+    pMainMenu->addAction(showRealGraph);
 
-    connect(pModel, SIGNAL(showRecomendation(const QString&)), this, SLOT(showMessageWindow(const QString&)));
+    connect(mSigmapper, SIGNAL(mapped(QString)), this, SLOT(addMessageToEventsList(const QString&)), Qt::QueuedConnection);
+    connect(pModel, SIGNAL(showRecomendation(const QString&)), this, SLOT(showMessageWindow(const QString&)), Qt::QueuedConnection);
 }
 
 void ModelVisualizer::createLayout()
@@ -94,13 +106,13 @@ void ModelVisualizer::addStations()
     {
         QStationItem *adding = new QStationItem((*it));
         pScene->addItem(adding);
-        connect(adding, SIGNAL(valueChanged(const QString&)), this, SLOT(addMessageToEventsList(const QString&)));
+        connect(adding, SIGNAL(valueChanged(const QString&)), this, SLOT(addMessageToEventsList(const QString&)), Qt::QueuedConnection);
     }
     for (QVector<Satellite*>::iterator it = pModel->satelliteList()->begin(); it != pModel->satelliteList()->end(); it++)
     {
         QSatelliteItem *adding = new QSatelliteItem((*it));
         pScene->addItem(adding);
-        connect(adding, SIGNAL(valueChanged(const QString&)), this, SLOT(addMessageToEventsList(const QString&)));
+        connect(adding, SIGNAL(valueChanged(const QString&)), this, SLOT(addMessageToEventsList(const QString&)), Qt::QueuedConnection);
     }
 }
 
@@ -109,12 +121,20 @@ void ModelVisualizer::initStatistics()
     QVector<Satellite*>* sats = pModel->satelliteList();
     statistics = new StatisticCollector(sats, 0);
     statistics->start();
+
+    QVector<RealSatellite*>* realSats = pWorld->satelliteList();
+    realStatistics = new RealStatisticCollector(realSats, 0);
+    realStatistics->start();
 }
 
 void ModelVisualizer::addMessageToEventsList(const QString& message)
 {
-    pEventList->addItem(message);
-    pEventList->scrollToBottom();
+    messages->prepend(message);
+
+    //pEventList->insertItem(0, message);
+
+    //pEventList->addItem(message);
+    //pEventList->scrollToBottom();
     //temp workaround for Issue #8
     if(message.compare("Simulation paused") == 0)
     {
@@ -156,15 +176,27 @@ void ModelVisualizer::showGraphsWindow()
     gd->show();
 }
 
+void ModelVisualizer::showRealGraphsWindow()
+{
+    RealGraphDialog* gd = new RealGraphDialog(pWorld, realStatistics, this);
+    gd->show();
+}
+
 void ModelVisualizer::showConfigWindow()
 {
     ConfigDialog* g1 = new ConfigDialog(pModel->stationList(), pModel->satelliteList(), this);
     g1->show();
 }
 
+void processModelTact(Model* m)
+{
+    m->processModelTact();
+}
+
 void ModelVisualizer::processModelTact()
 {
-    pModel->processModelTact();
+    QtConcurrent::run(::processModelTact, pModel);
+    //pModel->processModelTact();
 }
 
 void ModelVisualizer::showMessageWindow(const QString &recomendation)

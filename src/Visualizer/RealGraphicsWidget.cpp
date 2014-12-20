@@ -1,6 +1,6 @@
-#include "GraphicsWidget.h"
+#include "RealGraphicsWidget.h"
 
-GraphicsWidget::GraphicsWidget(StatisticCollector *sc, Satellite *sat, QWidget *parent) :
+RealGraphicsWidget::RealGraphicsWidget(RealStatisticCollector *sc, RealSatellite *sat, QWidget *parent) :
     QCustomPlot(parent)
 {
     statisticsData = sc->getData(sat);
@@ -23,13 +23,13 @@ GraphicsWidget::GraphicsWidget(StatisticCollector *sc, Satellite *sat, QWidget *
     connect(sc, SIGNAL(dataUpdated()), this, SLOT(updateGraph()));
 }
 
-void GraphicsWidget::updateGraph()
+void RealGraphicsWidget::updateGraph()
 {
     refreshGraphData();
     replot();
 }
 
-void GraphicsWidget::refreshGraphData()
+void RealGraphicsWidget::refreshGraphData()
 {
     graph(0)->setData(statisticsData->first, statisticsData->second);
     xAxis->setRange(statisticsData->first.front(), statisticsData->first.back());

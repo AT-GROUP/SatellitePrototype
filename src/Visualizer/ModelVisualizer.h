@@ -12,6 +12,10 @@
 #include <QXmlStreamReader>
 #include <qmenubar.h>
 #include "../../src/Model/model.h"
+#include "../SNMP/RealWorld.h"
+#include "../SNMP/RealStatisticCollector.h"
+#include "RealGraphDialog.h"
+#include "MessageList.h"
 
 class ModelVisualizer : public QWidget
 {
@@ -21,10 +25,13 @@ class ModelVisualizer : public QWidget
         QGraphicsView *pView;
         QGraphicsPixmapItem *pBackGroundPic;
         QGridLayout *pGridLayout;
-        QListWidget *pEventList;
+        MessageList* messages;
+        QListView *pEventList;
         QMenuBar *pMainMenu;
         Model *pModel;
+        RealWorld *pWorld;
         StatisticCollector* statistics;
+        RealStatisticCollector* realStatistics;
 	public:
 		explicit ModelVisualizer(QWidget *parent = 0);
 		~ModelVisualizer();
@@ -34,10 +41,12 @@ class ModelVisualizer : public QWidget
         QAction *showInfo;
         QAction *action5;
         QAction *action6;
+        QAction *showRealGraph;
         void processModelTact();
 	public slots:
 		void addMessageToEventsList(const QString& message);
 		void showGraphsWindow();
+        void showRealGraphsWindow();
         void showConfigWindow();
         void showMessageWindow(const QString &recomendation);
 	protected:
