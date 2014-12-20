@@ -5,6 +5,8 @@
 #include <QPointF>
 #include <QPair>
 
+typedef QPair<QString,QString> StrPair;
+
 class Satellite : public QObject
 {
     Q_OBJECT
@@ -41,7 +43,7 @@ class Satellite : public QObject
         QPointF *pos_;
 
     signals:
-        void attrChanged(const QPair<QString,QString>& info);
+        void attrChanged(const StrPair& info);
 };
 
 #endif // SATELLITE_H

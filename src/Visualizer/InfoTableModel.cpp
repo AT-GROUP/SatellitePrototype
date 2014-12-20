@@ -48,7 +48,7 @@ void InfoTableModel::updateData(std::tuple<int, QString, QString> incomingData)
     beginRemoveRows(QModelIndex(), row, row);
     endRemoveRows();
     beginInsertRows(QModelIndex(), row, row);
-    pDataStorage->insert(row,QPair<QString,QString>(data0,data1));
+    pDataStorage->insert(row,StrPair(data0,data1));
     endInsertRows();
 }
 

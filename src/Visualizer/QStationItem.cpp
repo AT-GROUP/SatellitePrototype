@@ -21,7 +21,7 @@ QStationItem::QStationItem(Station *station, QObject* parent)
     pInfoList->setAutoScroll (false);
     pInfoList->horizontalHeader()->hide();
     pInfoList->verticalHeader()->hide();
-    connect(pStation,SIGNAL(attrChanged(const QPair<QString,QString>&)),this,SLOT(updateFact(const QPair<QString,QString>&)));
+    connect(pStation,SIGNAL(attrChanged(const StrPair&)),this,SLOT(updateFact(const StrPair&)), Qt::QueuedConnection);
     pStation->refreshData();
 }
 
@@ -100,7 +100,7 @@ void QStationItem::hoverLeaveEvent (QGraphicsSceneHoverEvent *event)
     event->accept();
 }
 
-void QStationItem::updateFact(const QPair<QString, QString>& info)
+void QStationItem::updateFact(const StrPair& info)
 {
     QString attrName = info.first, attrValue = info.second;
     InfoTableModel* tempModel = (InfoTableModel*) pInfoList->model();

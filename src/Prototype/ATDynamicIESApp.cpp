@@ -6,6 +6,7 @@
 ATDynamicIESApp::ATDynamicIESApp(int & argc ,char** argv)
 	:QApplication(argc, argv)
 {	
+    qRegisterMetaType<StrPair>("StrPair");
     pVisualizer = new ModelVisualizer();
     pWrapper = new Wrapper();
 	pTickTimer = new QTimer(this);
@@ -19,7 +20,8 @@ ATDynamicIESApp::ATDynamicIESApp(int & argc ,char** argv)
 
 ATDynamicIESApp::~ATDynamicIESApp()
 {
-	pTickTimer->stop();
+
+    pTickTimer->stop();
 	delete pTickTimer;
     delete pVisualizer;
     delete pWrapper;

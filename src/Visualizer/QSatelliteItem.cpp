@@ -25,7 +25,7 @@ QSatelliteItem::QSatelliteItem(Satellite *satellite, QObject *parent)
     pInfoList->horizontalHeader()->hide();
     pInfoList->verticalHeader()->hide();
 
-    connect(pSatellite,SIGNAL(attrChanged(const QPair<QString,QString>&)),this,SLOT(updateFact(const QPair<QString,QString>&)));
+    connect(pSatellite,SIGNAL(attrChanged(const StrPair&)),this,SLOT(updateFact(const StrPair&)), Qt::QueuedConnection);
     pSatellite->refreshData();
 }
 
@@ -68,7 +68,7 @@ void QSatelliteItem::hoverLeaveEvent (QGraphicsSceneHoverEvent *event)
     event->accept();
 }
 
-void QSatelliteItem::updateFact(const QPair<QString, QString>& info)
+void QSatelliteItem::updateFact(const StrPair& info)
 {
     QString attrName = info.first, attrValue = info.second;
     InfoTableModel* tempModel = (InfoTableModel*) pInfoList->model();

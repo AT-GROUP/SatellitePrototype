@@ -4,6 +4,8 @@
 #include <QAbstractTableModel>
 #include <QVariant>
 
+typedef QPair<QString, QString> StrPair;
+
 class InfoTableModel : public QAbstractTableModel
 {
     Q_OBJECT

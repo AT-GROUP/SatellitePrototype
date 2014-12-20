@@ -45,7 +45,7 @@ class Station : public QObject
         int failureChance_;
         int groundConnection_;
     signals:
-        void attrChanged(const QPair<QString,QString>& info);
+        void attrChanged(const StrPair& info);
 };
 
 #endif // STATION_H
