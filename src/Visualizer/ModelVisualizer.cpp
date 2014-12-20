@@ -20,6 +20,7 @@ ModelVisualizer::ModelVisualizer(QWidget *parent):
     pWorld = new RealWorld();
     pWorld->start();
     //tmp
+    messages = new MessageList();
     createWidgets();
     createView();
     createMenu();
@@ -42,8 +43,10 @@ ModelVisualizer::~ModelVisualizer()
 void ModelVisualizer::createWidgets()
 {
     pScene = new QGraphicsScene();
-    pEventList = new QListWidget();
+    pEventList = new QListView();
+    pEventList->setModel(messages);
     pEventList->setFixedWidth(200);
+    pEventList->setUniformItemSizes(true);
     pEventList->autoScrollMargin();
     pBackGroundPic = new QGraphicsPixmapItem(QPixmap(":background"));
     pScene->addItem(pBackGroundPic);
@@ -126,8 +129,12 @@ void ModelVisualizer::initStatistics()
 
 void ModelVisualizer::addMessageToEventsList(const QString& message)
 {
-    pEventList->addItem(message);
-    pEventList->scrollToBottom();
+    messages->prepend(message);
+
+    //pEventList->insertItem(0, message);
+
+    //pEventList->addItem(message);
+    //pEventList->scrollToBottom();
     //temp workaround for Issue #8
     if(message.compare("Simulation paused") == 0)
     {

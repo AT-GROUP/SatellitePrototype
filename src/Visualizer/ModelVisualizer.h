@@ -15,6 +15,7 @@
 #include "../SNMP/RealWorld.h"
 #include "../SNMP/RealStatisticCollector.h"
 #include "RealGraphDialog.h"
+#include "MessageList.h"
 
 class ModelVisualizer : public QWidget
 {
@@ -24,7 +25,8 @@ class ModelVisualizer : public QWidget
         QGraphicsView *pView;
         QGraphicsPixmapItem *pBackGroundPic;
         QGridLayout *pGridLayout;
-        QListWidget *pEventList;
+        MessageList* messages;
+        QListView *pEventList;
         QMenuBar *pMainMenu;
         Model *pModel;
         RealWorld *pWorld;

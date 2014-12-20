@@ -19,7 +19,8 @@ SOURCES += \
     ../../src/Visualizer/StationDataTable.cpp \
     ../../src/Visualizer/RealGraphDialog.cpp \
     ../../src/Visualizer/RealStationDataTable.cpp \
-    ../../src/Visualizer/RealGraphicsWidget.cpp
+    ../../src/Visualizer/RealGraphicsWidget.cpp \
+    ../../src/Visualizer/MessageList.cpp
 HEADERS  += \
     ../../src/Visualizer/ConfigDialog.h \
     ../../src/Visualizer/ConfigPages.h \
@@ -34,7 +35,8 @@ HEADERS  += \
     ../../src/Visualizer/StationDataTable.h \
     ../../src/Visualizer/RealGraphDialog.h \
     ../../src/Visualizer/RealStationDataTable.h \
-    ../../src/Visualizer/RealGraphicsWidget.h
+    ../../src/Visualizer/RealGraphicsWidget.h \
+    ../../src/Visualizer/MessageList.h
 
 RESOURCES += \
     ../../src/Visualizer/Resources.qrc
