@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-<settings automatic_decisions = "f">
 <objects>
-    <satellite name="Intelsat" posX="200" posY="100" maxBw="3000">
-        <station name="Moscow" ip="81.200.86.82" interface="5" posX="800" posY="200" satellite="Intelsat" call="4" failure="2"/>
-        <station name="Bryansk" ip="81.200.86.210" interface="5" posX="840" posY="250" satellite="Intelsat" call="2" failure="3"/>
+    <satellite name="Intelsat" maxBw="3000">
+        <station name="Moscow" ip="81.200.86.82" interface="5" satellite="Intelsat" call="4" failure="2"/>
+        <station name="Bryansk" ip="81.200.86.210" interface="5" satellite="Intelsat" call="2" failure="3"/>
     </satellite>
 </objects>
+<interval value="1000" />
 </config>

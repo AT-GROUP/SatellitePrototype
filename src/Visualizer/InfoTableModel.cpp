@@ -27,6 +27,7 @@ int InfoTableModel::columnCount(const QModelIndex &parent) const
 QVariant InfoTableModel::data(const QModelIndex &index, int role = Qt::DisplayRole) const
 {
     if (index.row() > (pDataStorage->begin() + (pDataStorage->size() - 1)).key())
+        return QVariant();
     if (role == Qt::DisplayRole)
     {
         QPair<QString, QString> pair = pDataStorage->values().at(index.row());
