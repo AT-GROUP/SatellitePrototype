@@ -5,7 +5,7 @@
 #include <list>
 #include <QString>
 #define STDCXX_98_HEADERS
-#include "../snmp++/snmp_pp.h"
+#include "../snmp_pp/snmp_pp.h"
 
 class RouterPool;
 
