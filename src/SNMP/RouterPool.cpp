@@ -8,6 +8,12 @@ void updateRouter(SnmpRouter* router)
     //cout << "router " << router->getIp() << " : " << router->getBw() << endl;
 }
 
+void updateAllRouters(QMap<QString, SnmpRouter*> routers)
+{
+    for(auto it : routers)
+        updateRouter(it);
+}
+
 RouterPool::RouterPool() : interval(1000)
 {}
 
@@ -34,5 +40,5 @@ SnmpRouter* RouterPool::getRouter(QString ip)
 
 void RouterPool::updateRouters()
 {
-    QtConcurrent::map(routers, updateRouter);
+    QtConcurrent::run(updateAllRouters, routers);
 }

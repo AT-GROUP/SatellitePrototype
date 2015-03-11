@@ -43,3 +43,7 @@ DEPENDPATH += $$PWD/../SNMP
 
 QMAKE_CXXFLAGS += -std=c++11
 
+unix:!macx|win32: LIBS += -L$$PWD/../../src/snmp++/ -lsnmp++
+
+INCLUDEPATH += $$PWD/../../src/snmp++
+DEPENDPATH += $$PWD/../../src/snmp++
