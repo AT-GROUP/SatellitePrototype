@@ -9,7 +9,7 @@ QT       -= gui
 TARGET = snmp_pp
 TEMPLATE = lib
 
-DEFINES += SNMP_PP_LIBRARY STDCXX_98_HEADERS
+DEFINES += SNMP_PP_LIBRARY STDCXX_98_HEADERS HAVE_STRCASECMP
 
 SOURCES += ../../src/snmp_pp/address.cpp \
     ../../src/snmp_pp/asn1.cpp \
