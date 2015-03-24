@@ -15,7 +15,9 @@ void updateAllRouters(QMap<QString, SnmpRouter*> routers)
 }
 
 RouterPool::RouterPool() : interval(1000)
-{}
+{
+    Snmp::socket_startup();
+}
 
 void RouterPool::setInterval(int interval)
 {
