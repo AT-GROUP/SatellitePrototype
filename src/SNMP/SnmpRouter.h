@@ -27,6 +27,7 @@ private:
     CTarget ctarget;
 public:
     explicit SnmpRouter(QString &ip, RouterPool* rp);
+    ~SnmpRouter();
     void selectInterface(int index);
     long long getBw();
     long long getInOctets();

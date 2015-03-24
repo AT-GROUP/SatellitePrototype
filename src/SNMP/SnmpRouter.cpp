@@ -21,6 +21,11 @@ SnmpRouter::SnmpRouter(QString& ip, RouterPool *rp): ip(ip),_interface(0),ifInOc
     pdu += vb_ifOutOctets;
 }
 
+SnmpRouter::~SnmpRouter()
+{
+    delete snmp;
+}
+
 std::list<std::string> &split(const std::string &s, char delim, std::list<std::string> &elems)
 {
     std::stringstream ss(s);
