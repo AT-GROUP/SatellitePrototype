@@ -19,6 +19,7 @@ private:
     int _interface;
     long long ifInOctets, ifOutOctets;
     long long ifInBw, ifOutBw;
+    bool online;
     RouterPool* rp;
     qint64 lastQuery;
     Snmp* snmp;
@@ -34,6 +35,7 @@ public:
     long long getOutOctets();
     long long getInBw();
     long long getOutBw();
+    bool isOnline();
     void update();
     QString getIp();
 };

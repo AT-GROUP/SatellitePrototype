@@ -38,3 +38,11 @@ QString RealStation::ipAddress()
 {
     return router->getIp();
 }
+
+QString RealStation::status()
+{
+    if (router->isOnline())
+        return QString("online");
+    else
+        return QString("offline");
+}

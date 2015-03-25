@@ -8,12 +8,12 @@ RealStationDataTable::RealStationDataTable(RealStatisticCollector* sc, RealSatel
 {
     this->sat = sat;
     this->mod = mod;
-    setColumnCount(3);
+    setColumnCount(4);
     QStringList captions;
-    captions << "Name" << "IpAddress" << "BwInUse";
+    captions << "Name" << "IpAddress" << "BwInUse" << "Status";
     setHorizontalHeaderLabels(captions);
     resizeColumnsToContents();
-    //horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+    horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
     refreshData();
     connect(sc, SIGNAL(dataUpdated()), this, SLOT(refreshData()));
@@ -31,6 +31,7 @@ void RealStationDataTable::refreshData()
             setItem(0, 0, new QTableWidgetItem((*station)->name()));
             setItem(0, 1, new QTableWidgetItem((*station)->ipAddress()));
             setItem(0, 2, new QTableWidgetItem(QString::number((*station)->bwInUse())));
+            setItem(0, 3, new QTableWidgetItem((*station)->status()));
         }
     }
 }

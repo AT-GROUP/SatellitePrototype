@@ -20,6 +20,7 @@ public:
     RealSatellite* satellite();
     QString name();
     QString ipAddress();
+    QString status();
 
 };
 
