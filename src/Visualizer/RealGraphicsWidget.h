@@ -11,11 +11,12 @@ class RealGraphicsWidget : public QCustomPlot
 private:
     Data* statisticsData;
     RealSatellite* sat;
+    Time period;
 
     void refreshGraphData();
 public:
     explicit RealGraphicsWidget(RealStatisticCollector* sc, RealSatellite* sat, QWidget *parent = 0);
-
+    void setPeriod(Time p);
 signals:
 
 public slots:
